@@ -57,7 +57,7 @@ This is a group of projects, where you can draw simple 2D objects on `QWidget`:
 
 #### line segmet
   
-![](/home/maciejdudek/Wideo)
+![](/home/maciejdudek/Wideo/00.Test-program.gif)
 
 #### circle
 
