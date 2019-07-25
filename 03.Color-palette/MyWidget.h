@@ -3,7 +3,6 @@
 
 #include <QWidget>
 #include <QImage>
-#include <QMouseEvent>
 #include <QPainter>
 #include <QColor>
 
