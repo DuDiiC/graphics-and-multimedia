@@ -49,7 +49,7 @@ If you need more details you can read [this](https://wiki.qt.io/Getting_Started_
 
 In this project I checked if everything related to drawing on the widget, working with [`QImage`](https://doc.qt.io/qt-5/qimage.html), [`QPainter`](https://doc.qt.io/qt-5/qpainter.html) and [`QWidget`](https://doc.qt.io/qt-5/qwidget.html) works correctly. You can draw on the widget using the mouse.
 
-    IMAGE
+![Test-program.gif](https://media.giphy.com/media/J4Ig56OBjXiFosI1Q9/giphy.gif)
 
 ## 01. Drawing simple objects
 
@@ -57,23 +57,23 @@ This is a group of projects, where you can draw simple 2D objects on `QWidget`:
 
 #### line segmet
   
-![](/home/maciejdudek/Wideo/00.Test-program.gif)
+![Line-segment.gif](https://media.giphy.com/media/ck6NS9s41Ygb2rn4Hq/giphy.gif)
 
 #### circle
 
-        IMAGE
+![Circle.gif](https://media.giphy.com/media/VDTOHVh1wB9efIXuDR/giphy.gif)
 
 #### ellipse
   
-        IMAGE
+![Ellipse.gif](https://media.giphy.com/media/XeY0dIXmqWxCMLJUxI/giphy.gif)
 
 #### [bézier curve](https://en.wikipedia.org/wiki/Bézier_curve)
 
-        IMAGE
+![Bezier-curve.gif](https://media.giphy.com/media/SYFOJzyNC6nEVcoIlP/giphy.gif)
 
 #### [B-spline curve](https://en.wikipedia.org/wiki/B-spline)
 
-        IMAGE
+![B-spline-curve.gif](https://media.giphy.com/media/TgCBx7N2rgDCvuRc9f/giphy.gif)
 
 ## 02. Filling with color
 
