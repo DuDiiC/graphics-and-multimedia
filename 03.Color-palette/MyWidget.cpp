@@ -1,5 +1,4 @@
 #include "MyWidget.h"
-#include <iostream>
 
 MyWidget::MyWidget(int width, int height) {
     img = new QImage(width, height, QImage::Format_RGB32);
