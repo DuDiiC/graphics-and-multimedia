@@ -9,6 +9,9 @@ std::string MyWidget::IMAGE_PATHS[] = {
 MyWidget::MyWidget(int width, int height) {
     img = new QImage(width, height, QImage::Format_RGB32);
 
+    selectedLayer = 0;
+    selectedMode = NORMAL;
+
     for(int i = 0; i < 3; i++) {
         Layer layer(640, 480);
         layer.setImage(QImage(IMAGE_PATHS[i].c_str()));
@@ -16,9 +19,9 @@ MyWidget::MyWidget(int width, int height) {
     }
 
     layers[0].setBlendMode(NORMAL);
-    layers[0].setAlpha(0);
+    layers[0].setAlpha(100);
     layers[1].setBlendMode(NORMAL);
-    layers[1].setAlpha(100);
+    layers[1].setAlpha(50);
     layers[2].setBlendMode(NORMAL);
     layers[2].setAlpha(80);
     mixLayers();
@@ -344,4 +347,15 @@ void MyWidget::removeLayer(int index) {
 void MyWidget::paintEvent(QPaintEvent *) {
     QPainter p(this);
     p.drawImage(0, 0, *img);
+}
+
+void MyWidget::setAlpha(int value) {
+    layers[selectedLayer].setAlpha(value);
+    mixLayers();
+}
+
+void MyWidget::changeSelectedMode(int mode) {
+    selectedMode = (BlendMode)mode;
+    layers[selectedLayer].setBlendMode(selectedMode);
+    mixLayers();
 }

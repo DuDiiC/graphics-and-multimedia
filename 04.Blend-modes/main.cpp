@@ -6,6 +6,7 @@
 #include <QVBoxLayout>
 #include <QLabel>
 #include <QRadioButton>
+#include <QButtonGroup>
 
 #include "MyWidget.h"
 
@@ -23,6 +24,8 @@ int main(int argc, char **argv) {
     MyWidget *myWidget = new MyWidget(640, 480);
 
     // buttons to choose a layer
+    QButtonGroup *layersGroup = new QButtonGroup();
+
     QRadioButton *layer1 = new QRadioButton("Layer 1");
     layer1->setMaximumSize(80, 30);
     layer1->setChecked(true);
@@ -32,6 +35,13 @@ int main(int argc, char **argv) {
 
     QRadioButton *layer3 = new QRadioButton("Layer 3");
     layer3->setMaximumSize(80, 30);
+
+    layersGroup->addButton(layer1);
+    layersGroup->setId(layer1, 0);
+    layersGroup->addButton(layer2);
+    layersGroup->setId(layer2, 1);
+    layersGroup->addButton(layer3);
+    layersGroup->setId(layer3, 2);
 
     // container for buttons
     QHBoxLayout *radioButtons = new QHBoxLayout();
@@ -67,8 +77,10 @@ int main(int argc, char **argv) {
     widget->show();
 
     /* connecting signals and slots for sliders */
-    // ...
-    // ...
+    app.connect(alphaSlider, SIGNAL(valueChanged(int)), myWidget, SLOT(setAlpha(int)));
+    app.connect(layersGroup, SIGNAL(buttonClicked(int)), myWidget, SLOT(setSelectedLayer(int)));
+    app.connect(blendMode, SIGNAL(currentIndexChanged(int)), myWidget, SLOT(changeSelectedMode(int)));
+
 
     return app.exec();
 }

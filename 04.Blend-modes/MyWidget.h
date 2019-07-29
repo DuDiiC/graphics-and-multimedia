@@ -28,6 +28,10 @@ class MyWidget : public QWidget {
 
     std::vector < Layer > layers;
 
+    int selectedLayer;
+
+    BlendMode selectedMode;
+
     /** -- BLEND MODES -- */
     /**
      * alphaBlending -  function to blend given images
@@ -95,11 +99,18 @@ public:
      */
     void mixLayers();
 
+    int getSelectedLayer() { return this->selectedLayer; }
+
+    void setSelectedMode(BlendMode selectedMode) { this->selectedMode = selectedMode; }
+    BlendMode getselectedMode() { return this->selectedMode; }
+
     Layer getLayer(int index);
 
     void addLayer(Layer layer);
 
     void removeLayer(int index);
+
+
 
 
 protected:
@@ -113,7 +124,11 @@ protected:
 signals:
 
 public slots:
-    // add more
+
+    void setAlpha(int value);
+    void setSelectedLayer(int selectedLayer) { this->selectedLayer = selectedLayer; }
+    void changeSelectedMode(int mode);
+
 };
 
 #endif // MYWIDGET_H
