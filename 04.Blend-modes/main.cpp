@@ -20,9 +20,6 @@ int main(int argc, char **argv) {
     widget->setMinimumWidth(800);
     widget->setMinimumHeight(500);
 
-    // widget with image
-    MyWidget *myWidget = new MyWidget(640, 480);
-
     // buttons to choose a layer
     QButtonGroup *layersGroup = new QButtonGroup();
 
@@ -68,6 +65,10 @@ int main(int argc, char **argv) {
     gui->addWidget(blendMode);
     gui->addLayout(alpha);
 
+    // widget with image
+    MyWidget *myWidget = new MyWidget(layersGroup, blendMode, alphaSlider, 640, 480);
+
+    // layout for all elements
     QHBoxLayout *layout = new QHBoxLayout();
     layout->addWidget(myWidget, 800);
     layout->addLayout(gui);
@@ -78,7 +79,7 @@ int main(int argc, char **argv) {
 
     /* connecting signals and slots for sliders */
     app.connect(alphaSlider, SIGNAL(valueChanged(int)), myWidget, SLOT(setAlpha(int)));
-    app.connect(layersGroup, SIGNAL(buttonClicked(int)), myWidget, SLOT(setSelectedLayer(int)));
+    app.connect(layersGroup, SIGNAL(buttonClicked(int)), myWidget, SLOT(setLayer(int)));
     app.connect(blendMode, SIGNAL(currentIndexChanged(int)), myWidget, SLOT(changeSelectedMode(int)));
 
 

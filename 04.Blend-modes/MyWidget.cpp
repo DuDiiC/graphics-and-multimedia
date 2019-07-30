@@ -6,8 +6,12 @@ std::string MyWidget::IMAGE_PATHS[] = {
     "/home/maciejdudek/Pulpit/LGM koncowe/Fourth-Semester-Graphics/04.Blend-modes/resources/third.jpg"
 };
 
-MyWidget::MyWidget(int width, int height) {
+MyWidget::MyWidget(QButtonGroup *qLayers, QComboBox *mode, QSlider *alpha, int width, int height) {
     img = new QImage(width, height, QImage::Format_RGB32);
+
+    this->qLayers = qLayers;
+    this->qMode = mode;
+    this->qAlpha = alpha;
 
     selectedLayer = 0;
     selectedMode = NORMAL;
@@ -354,8 +358,19 @@ void MyWidget::setAlpha(int value) {
     mixLayers();
 }
 
+void MyWidget::setLayer(int layer) {
+    this->selectedLayer = layer;
+
+    qAlpha->setValue(layers[selectedLayer].getAlpha());
+    qMode->setCurrentIndex((int)layers[selectedLayer].getBlendMode());
+}
+
 void MyWidget::changeSelectedMode(int mode) {
     selectedMode = (BlendMode)mode;
     layers[selectedLayer].setBlendMode(selectedMode);
+
+    qAlpha->setValue(layers[selectedLayer].getAlpha());
+
+
     mixLayers();
 }

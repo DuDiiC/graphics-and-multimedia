@@ -6,6 +6,9 @@
 #include <QPainter>
 #include <QColor>
 #include <QString>
+#include <QSlider>
+#include <QComboBox>
+#include <QButtonGroup>
 
 #include <vector>
 #include <cmath>
@@ -25,6 +28,10 @@ class MyWidget : public QWidget {
     static std::string IMAGE_PATHS[10];
 
     QImage *img;
+
+    QButtonGroup *qLayers;
+    QComboBox *qMode;
+    QSlider *qAlpha;
 
     std::vector < Layer > layers;
 
@@ -90,7 +97,7 @@ class MyWidget : public QWidget {
 
 public:
 
-    MyWidget(int width = 800, int height = 600);
+    MyWidget(QButtonGroup *qLayers, QComboBox *mode, QSlider *alpha, int width = 800, int height = 600);
 
     ~MyWidget();
 
@@ -99,6 +106,7 @@ public:
      */
     void mixLayers();
 
+    void setSelectedLayer(int selectedLayer) { this->selectedLayer = selectedLayer; }
     int getSelectedLayer() { return this->selectedLayer; }
 
     void setSelectedMode(BlendMode selectedMode) { this->selectedMode = selectedMode; }
@@ -126,7 +134,7 @@ signals:
 public slots:
 
     void setAlpha(int value);
-    void setSelectedLayer(int selectedLayer) { this->selectedLayer = selectedLayer; }
+    void setLayer(int layer);
     void changeSelectedMode(int mode);
 
 };
