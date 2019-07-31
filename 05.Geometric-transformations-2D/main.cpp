@@ -8,14 +8,18 @@
 #include <QCheckBox>
 #include <QLabel>
 
+#include "MyWidget.h"
+
 int main(int argc, char **argv ) {
 
     QApplication app( argc, argv );
 
     // main app widget
     QWidget *widget = new QWidget();
-    widget->setMinimumWidth(800);
-    widget->setMinimumHeight(800);
+    widget->setMinimumWidth(700);
+    widget->setMinimumHeight(500);
+
+    MyWidget *myWidget = new MyWidget(500, 480);
 
     // ---INTERPOLATION---
     // buttons to choose a interpolation mode
@@ -103,6 +107,7 @@ int main(int argc, char **argv ) {
     shearingYLayout->addWidget(shearingYLabel);
     shearingYLayout->addWidget(shearingYSlider);
 
+    // --- SET ALL IN LAYOUT ---
     QVBoxLayout *guiLayout = new QVBoxLayout();
 
     guiLayout->addLayout(interpolationLayout);
@@ -123,7 +128,11 @@ int main(int argc, char **argv ) {
     guiLayout->addLayout(shearingXLayout);
     guiLayout->addLayout(shearingYLayout);
 
-    widget->setLayout(guiLayout);
+    QHBoxLayout *mainLayout = new QHBoxLayout();
+    mainLayout->addWidget(myWidget, 800);
+    mainLayout->addLayout(guiLayout);
+
+    widget->setLayout(mainLayout);
 
     widget->show();
 
