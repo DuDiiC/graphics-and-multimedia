@@ -69,7 +69,7 @@ int main(int argc, char **argv ) {
     translationYLayout->addWidget(translationYSlider);
 
     // ---SCALING---
-    QLabel *scalingLabel = new QLabel("TRANSLATION");
+    QLabel *scalingLabel = new QLabel("SCALING");
     QCheckBox *homogeneousScalingCheckBox = new QCheckBox("homogeneous scaling");
 
     QLabel *scalingXLabel = new QLabel("x");
@@ -135,6 +135,17 @@ int main(int argc, char **argv ) {
     widget->setLayout(mainLayout);
 
     widget->show();
+
+    // --- CONNECTING SIGNALS AND SLOTS --
+    app.connect(interpolationButtonGroup, SIGNAL(buttonClicked(int)), myWidget, SLOT(setInterpolationMode(int)));
+    app.connect(rotationSlider, SIGNAL(valueChanged(int)), myWidget, SLOT(setRotation(int)));
+    app.connect(translationXSlider, SIGNAL(valueChanged(int)), myWidget, SLOT(setXTranslation(int)));
+    app.connect(translationYSlider, SIGNAL(valueChanged(int)), myWidget, SLOT(setYTranslation(int)));
+    app.connect(homogeneousScalingCheckBox, SIGNAL(clicked(bool)), myWidget, SLOT(setHomogeneousScaling(bool)));
+    app.connect(scalingXSlider, SIGNAL(valueChanged(int)), myWidget, SLOT(setXScaling(int)));
+    app.connect(scalingYSlider, SIGNAL(valueChanged(int)), myWidget, SLOT(setYScaling(int)));
+    app.connect(shearingXSlider, SIGNAL(valueChanged(int)), myWidget, SLOT(setXShearing(int)));
+    app.connect(shearingYSlider, SIGNAL(valueChanged(int)), myWidget, SLOT(setYShearing(int)));
 
     return app.exec();
 }

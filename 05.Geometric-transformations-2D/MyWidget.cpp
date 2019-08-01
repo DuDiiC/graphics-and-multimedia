@@ -60,3 +60,40 @@ void MyWidget::drawFigure() {
 
 
 }
+
+void MyWidget::setInterpolationMode(int index) {
+    interpolationMode = (InterpolationMode)index;
+}
+
+void MyWidget::setRotation(int value) {
+
+}
+
+void MyWidget::setXTranslation(int value) {
+
+}
+
+void MyWidget::setYTranslation(int value) {
+
+}
+
+void MyWidget::setHomogeneousScaling(bool value) {
+    homogeneousScaling = value;
+}
+
+void MyWidget::setXScaling(int value) {
+
+}
+
+void MyWidget::setYScaling(int value) {
+
+}
+
+void MyWidget::setXShearing(int value) {
+
+}
+
+void MyWidget::setYShearing(int value) {
+
+}
+

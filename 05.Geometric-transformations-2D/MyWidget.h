@@ -11,13 +11,17 @@
 
 #include "MyPoint2D.h"
 #include "LineSegment.h"
-
+#include "interpolationMode.h"
 
 class MyWidget : public QWidget {
 
     Q_OBJECT
 
     QImage *img;
+
+    bool homogeneousScaling = false;
+
+    InterpolationMode interpolationMode = NEAREST_NEIGHBOR;
 
 public:
 
@@ -28,6 +32,24 @@ public:
 signals:
 
 public slots:
+
+    void setInterpolationMode(int index);
+
+    void setRotation(int value);
+
+    void setXTranslation(int value);
+
+    void setYTranslation(int value);
+
+    void setHomogeneousScaling(bool value);
+
+    void setXScaling(int value);
+
+    void setYScaling(int value);
+
+    void setXShearing(int value);
+
+    void setYShearing(int value);
 
 protected:
 
