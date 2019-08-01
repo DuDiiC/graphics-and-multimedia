@@ -6,12 +6,14 @@
 #include <QPainter>
 #include <QColor>
 
+#include <QGenericMatrix>
+
 #include <cmath>
 #include <vector>
 
 #include "MyPoint2D.h"
 #include "LineSegment.h"
-#include "interpolationMode.h"
+#include "InterpolationMode.h"
 
 class MyWidget : public QWidget {
 
@@ -22,6 +24,10 @@ class MyWidget : public QWidget {
     bool homogeneousScaling = false;
 
     InterpolationMode interpolationMode = NEAREST_NEIGHBOR;
+
+    QGenericMatrix<3, 1, float> point;
+    QGenericMatrix<3, 3, float> matrix;
+
 
 public:
 
