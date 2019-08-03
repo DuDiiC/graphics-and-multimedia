@@ -4,13 +4,14 @@
 #include <QWidget>
 #include <QImage>
 #include <QPainter>
+#include <QSlider>
 #include <QColor>
 
 #include <QGenericMatrix>
 
 #include <cmath>
-#include <vector>
 
+#include "TransformationMatrix3x3.h"
 #include "MyPoint2D.h"
 #include "LineSegment.h"
 #include "InterpolationMode.h"
@@ -19,19 +20,28 @@ class MyWidget : public QWidget {
 
     Q_OBJECT
 
+    /**
+     * img is a image after transformations
+     */
     QImage *img;
+
+    /**
+     * img2 is a const image created after program launch
+     */
+    QImage *img2;
+
+    QSlider *scalingXSlider, *scalingYSlider;
 
     bool homogeneousScaling = false;
 
     InterpolationMode interpolationMode = NEAREST_NEIGHBOR;
 
-    QGenericMatrix<3, 1, float> point;
-    QGenericMatrix<3, 3, float> matrix;
+    TransformationMatrix3x3 *transformationMartrix;
 
 
 public:
 
-    MyWidget(int width = 800, int height = 600);
+    MyWidget(QSlider* scalingXS, QSlider* scalingYS, int width = 800, int height = 600);
 
     ~MyWidget();
 
@@ -71,6 +81,16 @@ private:
      * drawFigure draws simple figure (actual it is a square) on the image
      */
     void drawFigure();
+
+    /**
+     * updateImg draws new image after transformations
+     */
+    void updateImg();
+
+    /**
+     * function to calculate correct coordinates, when point doesn't have integer coordinates
+     */
+    double doubleLineInterpolation(double value);
 };
 
 #endif // MYWIDGET_H

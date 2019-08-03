@@ -2,22 +2,20 @@
 #define TRANSFORMATIONMATRIX3X3_H
 
 #include <QGenericMatrix>
+#include <QImage>
 
 #include <cmath>
-
 
 class TransformationMatrix3x3 {
 
 public:
 
-    TransformationMatrix3x3(int tX, int tY, int sX, int sY, int shX, int shY, double alpha_) :
-        tx(tX), ty(tY), sx(sX), sy(sY), shx(shX), shy(shY), alpha(alpha_) {
-        updateMatrix();
+    TransformationMatrix3x3(int tX, int tY, double sX, double sY, double shX, double shY, double alpha_, QImage *img) :
+        tx(tX), ty(tY), sx(sX), sy(sY), shx(shX), shy(shY), alpha(alpha_), x0(img->width()/2), y0(img->height()/2) {
     }
 
-    TransformationMatrix3x3(int tX, int tY, int sX, int sY, int shX, int shY, int degrees) :
-        tx(tX), ty(tY), sx(sX), sy(sY), shx(shX), shy(shY), alpha((double)degrees/M_PI) {
-        updateMatrix();
+    TransformationMatrix3x3(int tX, int tY, double sX, double sY, double shX, double shY, int degrees, QImage *img) :
+        tx(tX), ty(tY), sx(sX), sy(sY), shx(shX), shy(shY), alpha((double)degrees/M_PI), x0(img->width()/2), y0(img->height()/2) {
     }
 
     ~TransformationMatrix3x3() {}
@@ -26,28 +24,33 @@ public:
     int getTX() { return tx; }
 
     void setTY(int ty) { this->ty = ty; updateMatrix(); }
-    int getTX() { return ty; }
+    int getTY() { return ty; }
 
-    void setSX(int sx) { this->sx = sx; updateMatrix(); }
-    int getSX() { return sx; }
+    void setSX(double sx) { this->sx = sx; updateMatrix(); }
+    double getSX() { return sx; }
 
-    void setSY(int sy) { this->sy = sy; updateMatrix(); }
-    int getSY() { return sy; }
+    void setSY(double sy) { this->sy = sy; updateMatrix(); }
+    double getSY() { return sy; }
 
-    void setSHX(int shx) { this->shx = shx; updateMatrix(); }
-    int getSHX() { return shx; }
+    void setSHX(double shx) { this->shx = shx; updateMatrix(); }
+    double getSHX() { return shx; }
 
-    void setSHY(int shy) { this->shy = shy; updateMatrix(); }
-    int getSHY() { return shy; }
+    void setSHY(double shy) { this->shy = shy; updateMatrix(); }
+    double getSHY() { return shy; }
 
     void setAlpha(double alpha) { this->alpha = alpha; updateMatrix(); }
     void setAlphaFromDegrees(int degrees) {
-        this->alpha = (double)degrees/M_PI;
+        this->alpha = (double)degrees * M_PI/180.0;
         updateMatrix();
     }
     double getAlpha() { return alpha; }
 
     QGenericMatrix<3, 3, double> getTransformationMatrix() { return transformationMatrix; }
+
+    /**
+     * updateMatrix is method calling after modyfying some values in transformation matrix
+     */
+    void updateMatrix();
 
 private:
 
@@ -55,6 +58,12 @@ private:
      * 3x3 matrix to make 2D transformations for points in homogenuous coordinates notation (vector 3x1 [x, y, 1])
      */
     QGenericMatrix<3, 3, double> transformationMatrix;
+
+    /**
+     * center point coordinates
+     */
+    int x0;
+    int y0;
 
     /**
      * values to translation
@@ -65,24 +74,19 @@ private:
     /**
      * values to scaling
      */
-    int sx;
-    int sy;
+    double sx;
+    double sy;
 
     /**
      * values to shearing
      */
-    int shx;
-    int shy;
+    double shx;
+    double shy;
 
     /**
-     * values in radians, between (-2*PI, 2*PI), value to rotation
+     * values in radians, between (-PI, PI), value to rotation
      */
     double alpha;
-
-    /**
-     * updateMatrix is method calling after modyfying some values in transformation matrix
-     */
-    void updateMatrix();
 };
 
 #endif // TRANSFORMATIONMATRIX3X3_H

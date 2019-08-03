@@ -19,8 +19,6 @@ int main(int argc, char **argv ) {
     widget->setMinimumWidth(700);
     widget->setMinimumHeight(500);
 
-    MyWidget *myWidget = new MyWidget(500, 480);
-
     // ---INTERPOLATION---
     // buttons to choose a interpolation mode
     QLabel *interpolationLabel = new QLabel("INTERPOLATION MODE");
@@ -47,14 +45,16 @@ int main(int argc, char **argv ) {
     QLabel *rotationLabel = new QLabel("ROTATION");
 
     QSlider *rotationSlider = new QSlider(Qt::Horizontal);
-    rotationSlider->setRange(-360, 360); // TODO: set range
+    rotationSlider->setRange(-180, 180);
+    rotationSlider->setValue(0);
 
     // ---TRANSLATION---
     QLabel *translationLabel = new QLabel("TRANSLATION");
 
     QLabel *translationXLabel = new QLabel("x");
     QSlider *translationXSlider = new QSlider(Qt::Horizontal);
-    //translationXSlider->setRange(); // TODO: set range
+    translationXSlider->setRange(-300, 300);
+    translationXSlider->setValue(0);
 
     QHBoxLayout *translationXLayout = new QHBoxLayout();
     translationXLayout->addWidget(translationXLabel);
@@ -62,7 +62,8 @@ int main(int argc, char **argv ) {
 
     QLabel *translationYLabel = new QLabel("y");
     QSlider *translationYSlider = new QSlider(Qt::Horizontal);
-    //translationYSlider->setRange(); // TODO: set range
+    translationYSlider->setRange(-300, 300);
+    translationYSlider->setValue(0);
 
     QHBoxLayout *translationYLayout = new QHBoxLayout();
     translationYLayout->addWidget(translationYLabel);
@@ -74,7 +75,8 @@ int main(int argc, char **argv ) {
 
     QLabel *scalingXLabel = new QLabel("x");
     QSlider *scalingXSlider = new QSlider(Qt::Horizontal);
-    //scalingXSlider->setRange(); // TODO: set range
+    scalingXSlider->setRange(0, 250);
+    scalingXSlider->setValue(100);
 
     QHBoxLayout *scalingXLayout = new QHBoxLayout();
     scalingXLayout->addWidget(scalingXLabel);
@@ -82,7 +84,8 @@ int main(int argc, char **argv ) {
 
     QLabel *scalingYLabel = new QLabel("y");
     QSlider *scalingYSlider = new QSlider(Qt::Horizontal);
-    //scalingYSlider->setRange(); // TODO: set range
+    scalingYSlider->setRange(0, 250);
+    scalingYSlider->setValue(100);
 
     QHBoxLayout *scalingYLayout = new QHBoxLayout();
     scalingYLayout->addWidget(scalingYLabel);
@@ -93,7 +96,7 @@ int main(int argc, char **argv ) {
 
     QLabel *shearingXLabel = new QLabel("x");
     QSlider *shearingXSlider = new QSlider(Qt::Horizontal);
-    //shearingXSlider->setRange(); // TODO: set range
+    shearingXSlider->setRange(-250, 250); // TODO: set range
 
     QHBoxLayout *shearingXLayout = new QHBoxLayout();
     shearingXLayout->addWidget(shearingXLabel);
@@ -101,11 +104,14 @@ int main(int argc, char **argv ) {
 
     QLabel *shearingYLabel = new QLabel("y");
     QSlider *shearingYSlider = new QSlider(Qt::Horizontal);
-    //shearingYSlider->setRange(); // TODO: set range
+    shearingYSlider->setRange(-250, 250); // TODO: set range
 
     QHBoxLayout *shearingYLayout = new QHBoxLayout();
     shearingYLayout->addWidget(shearingYLabel);
     shearingYLayout->addWidget(shearingYSlider);
+
+    // --- MY WIDGET --
+    MyWidget *myWidget = new MyWidget(scalingXSlider, scalingYSlider, 500, 480);
 
     // --- SET ALL IN LAYOUT ---
     QVBoxLayout *guiLayout = new QVBoxLayout();
