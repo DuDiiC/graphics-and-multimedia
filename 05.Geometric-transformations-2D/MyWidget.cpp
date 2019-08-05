@@ -2,7 +2,7 @@
 
 MyWidget::MyWidget(QSlider* scalingXS, QSlider* scalingYS, int width, int height) {
 
-    img = new QImage(width, height, QImage::Format_RGB32);
+    img = new QImage("/home/maciejdudek/Pulpit/LGM koncowe/Fourth-Semester-Graphics/05.Geometric-transformations-2D/resources/image.jpg");
     img2 = new QImage(width, height, QImage::Format_RGB32);
 
     *img2 = *img;
@@ -12,7 +12,7 @@ MyWidget::MyWidget(QSlider* scalingXS, QSlider* scalingYS, int width, int height
 
     transformationMartrix = new TransformationMatrix3x3(0, 0, 1.0, 1.0, 0.0, 0.0, 0.0, img);
 
-    drawFigure();
+    //drawFigure();
 }
 
 MyWidget::~MyWidget() {
@@ -78,9 +78,30 @@ void MyWidget::updateImg() {
     for(int x = 0; x < img->width(); x++) {
         for(int y = 0; y < img->height(); y++) {
 
-            MyPoint2D tempPoint(x, y);
+            // without filling algorithm
+//            MyPoint2D tempPoint(x, y);
 
-            if(tempPoint.getPixelRGBColor(img2) == 0xFFFFFF) {
+//            if(tempPoint.getPixelRGBColor(img2) == 0xFFFFFF) {
+
+//                double tempPointTab[] = { x, y, 1 };
+
+//                QGenericMatrix<1, 3, double> tempPointM(tempPointTab);
+
+//                tempPointM = transformationMartrix->getTransformationMatrix() * tempPointM;
+
+//                if(interpolationMode == NEAREST_NEIGHBOR) {
+//                    tempPoint.setXY(round(tempPointM.data()[0]), round(tempPointM.data()[1]));
+//                } else if(interpolationMode == DOUBLE_LINE_INTERPOLATION) {
+//                    tempPoint.setXY(doubleLineInterpolation(tempPointM.data()[0]), doubleLineInterpolation(tempPointM.data()[1]));
+//                }
+
+//                tempPoint.setXY((int)tempPointM.data()[0], (int)tempPointM.data()[1]);
+
+//                tempPoint.setPixel(img);
+//            }
+
+            // with filling algorithm
+                MyPoint2D tempPoint(x, y);
 
                 double tempPointTab[] = { x, y, 1 };
 
@@ -88,16 +109,22 @@ void MyWidget::updateImg() {
 
                 tempPointM = transformationMartrix->getTransformationMatrix() * tempPointM;
 
-                if(interpolationMode == NEAREST_NEIGHBOR) {
-                    tempPoint.setXY(round(tempPointM.data()[0]), round(tempPointM.data()[1]));
-                } else if(interpolationMode == DOUBLE_LINE_INTERPOLATION) {
-                    tempPoint.setXY(doubleLineInterpolation(tempPointM.data()[0]), doubleLineInterpolation(tempPointM.data()[1]));
+                QColor color(0, 0, 0);
+
+                if(tempPointM.data()[0] >= 0 && tempPointM.data()[0] < img->width() && tempPointM.data()[1] >= 0 && tempPointM.data()[1] < img->height()-1) {
+                    if(interpolationMode == NEAREST_NEIGHBOR) {
+                        tempPoint.setXY(round(tempPointM.data()[0]), round(tempPointM.data()[1]));
+                    } else if(interpolationMode == DOUBLE_LINE_INTERPOLATION) {
+                        tempPoint.setXY(doubleLineInterpolation(tempPointM.data()[0]), doubleLineInterpolation(tempPointM.data()[1]));
+                    }
+                    color = tempPoint.getPixelRGBColor(img2);
                 }
 
-                tempPoint.setXY((int)tempPointM.data()[0], (int)tempPointM.data()[1]);
+                tempPoint.setXY(x, y);
 
-                tempPoint.setPixel(img);
-            }
+                if(color.value() != 0x000000) {
+                    tempPoint.setPixel(img, color);
+                }
         }
     }
     repaint();
@@ -153,7 +180,6 @@ void MyWidget::setYScaling(int value) {
     updateImg();
 }
 
-// nie dziala wcale, nie wiem czemu
 void MyWidget::setXShearing(int value) {
     transformationMartrix->setSHX((double)value/100.0);
     // multiply and repaint
