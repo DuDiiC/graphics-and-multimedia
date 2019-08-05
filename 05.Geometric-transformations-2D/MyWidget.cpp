@@ -1,5 +1,5 @@
 #include "MyWidget.h"
-
+#include <iostream>
 MyWidget::MyWidget(QSlider* scalingXS, QSlider* scalingYS, int width, int height) {
 
     img = new QImage("/home/maciejdudek/Pulpit/LGM koncowe/Fourth-Semester-Graphics/05.Geometric-transformations-2D/resources/image.jpg");
@@ -48,10 +48,11 @@ void MyWidget::updateImg() {
                 if(tempPointM.data()[0] >= 0 && tempPointM.data()[0] < img->width() && tempPointM.data()[1] >= 0 && tempPointM.data()[1] < img->height()-1) {
                     if(interpolationMode == NEAREST_NEIGHBOR) {
                         tempPoint.setXY(round(tempPointM.data()[0]), round(tempPointM.data()[1]));
+                        color = tempPoint.getPixelRGBColor(img2);
                     } else if(interpolationMode == DOUBLE_LINE_INTERPOLATION) {
-                        tempPoint.setXY(doubleLineInterpolation(tempPointM.data()[0]), doubleLineInterpolation(tempPointM.data()[1]));
+                        color = doubleLineInterpolation(img2, tempPointM.data()[0], tempPointM.data()[1]);
                     }
-                    color = tempPoint.getPixelRGBColor(img2);
+
                 }
 
                 tempPoint.setXY(x, y);
@@ -66,6 +67,7 @@ void MyWidget::updateImg() {
 
 void MyWidget::setInterpolationMode(int index) {
     interpolationMode = (InterpolationMode)index;
+    updateImg();
 }
 
 void MyWidget::setRotation(int value) {
@@ -120,7 +122,31 @@ void MyWidget::setYShearing(int value) {
     updateImg();
 }
 
-// TODO: ADD IMPLEMENTATION
-double MyWidget::doubleLineInterpolation(double value) {
-    return value;
+QColor MyWidget::doubleLineInterpolation(QImage *img, double x, double y) {
+
+    if(floor(x) >= 0 && ceil(x) < img->width() && floor(y) >= 0 && ceil(y) < img->height()) {
+
+        QColor point1Color = img->pixel(floor(x), ceil(y)),
+               point2Color = img->pixel(ceil(x), ceil(y)),
+               point3Color = img->pixel(ceil(x), floor(y)),
+               point4Color = img->pixel(floor(x), floor(y));
+
+        int red, green, blue;
+
+        double a = x - floor(x);
+        double b = y - floor(y);
+
+        red = b * ((1.0 - a) * (double)point1Color.red() + a * (double)point2Color.red())
+                    + (1.0 - b) * ((1.0 - a) * (double)point4Color.red() + a * (double)point3Color.red());
+        green = b * ((1.0 - a) * (double)point1Color.green() + a * (double)point2Color.green())
+                    + (1.0 - b) * ((1.0 - a) * (double)point4Color.green() + a * (double)point3Color.green());
+        blue = b * ((1.0 - a) * (double)point1Color.blue() + a * (double)point2Color.blue())
+                    + (1.0 - b) * ((1.0 - a) * (double)point4Color.blue() + a * (double)point3Color.blue());
+
+    //    std::cout << (int)RGBColor.toRgb() << std::endl;
+
+        return QColor(red, green, blue);
+    } else {
+        return QColor(0, 0, 0);
+    }
 }

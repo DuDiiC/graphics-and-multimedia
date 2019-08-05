@@ -83,7 +83,7 @@ private:
     /**
      * function to calculate correct coordinates, when point doesn't have integer coordinates
      */
-    double doubleLineInterpolation(double value);
+    QColor doubleLineInterpolation(QImage *img, double x, double y);
 };
 
 #endif // MYWIDGET_H
