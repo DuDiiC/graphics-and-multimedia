@@ -56,6 +56,9 @@ private:
 
     /**
      * 3x3 matrix to make 2D transformations for points in homogenuous coordinates notation (vector 3x1 [x, y, 1])
+     * inverse matrix after multiplying all transformations and moving the center from point (0,0) and back
+     * multiplication:
+     * (fromZero * translation * scaling * rotation * shearingX * shearingY * toZero)^-1
      */
     QGenericMatrix<3, 3, double> transformationMatrix;
 

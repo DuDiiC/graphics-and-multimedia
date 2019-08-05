@@ -6,14 +6,12 @@
 #include <QPainter>
 #include <QSlider>
 #include <QColor>
-
 #include <QGenericMatrix>
 
 #include <cmath>
 
 #include "TransformationMatrix3x3.h"
 #include "MyPoint2D.h"
-#include "LineSegment.h"
 #include "InterpolationMode.h"
 
 class MyWidget : public QWidget {
@@ -76,11 +74,6 @@ protected:
     void paintEvent(QPaintEvent*);
 
 private:
-
-    /**
-     * drawFigure draws simple figure (actual it is a square) on the image
-     */
-    void drawFigure();
 
     /**
      * updateImg draws new image after transformations
