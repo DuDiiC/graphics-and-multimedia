@@ -2,6 +2,15 @@
 #include <iostream>
 #include <includes/TriangleTexturing.h>
 
+std::string Cube::IMAGE_PATHS[] = {
+        "/home/maciejdudek/Pulpit/LGM koncowe/Fourth-Semester-Graphics/07.Geometric-transformations-3D/resources/red.png",
+        "/home/maciejdudek/Pulpit/LGM koncowe/Fourth-Semester-Graphics/07.Geometric-transformations-3D/resources/green.jpg",
+        "/home/maciejdudek/Pulpit/LGM koncowe/Fourth-Semester-Graphics/07.Geometric-transformations-3D/resources/blue.jpg",
+        "/home/maciejdudek/Pulpit/LGM koncowe/Fourth-Semester-Graphics/07.Geometric-transformations-3D/resources/yellow.jpg",
+        "/home/maciejdudek/Pulpit/LGM koncowe/Fourth-Semester-Graphics/07.Geometric-transformations-3D/resources/white.jpg",
+        "/home/maciejdudek/Pulpit/LGM koncowe/Fourth-Semester-Graphics/07.Geometric-transformations-3D/resources/purple.jpg"
+};
+
 Cube::Cube(int a, int d) {
     x = a;
     y = a;
@@ -21,23 +30,15 @@ Cube::Cube(int x, int y, int z, int d) {
 void Cube::draw(QImage *img, int RGBColor) {
 
     img->fill(Qt::black);
+
+    // drawing textures
+    texturingWalls(img);
+
+    // drawing cube's edges
     for(int i = 0; i < triangles.size(); i++) {
         triangles[i].changeInto2D()->draw(img, RGBColor);
     }
 
-    QImage *frontSource = new QImage("/home/maciejdudek/Pulpit/LGM koncowe/Fourth-Semester-Graphics/07.Geometric-transformations-3D/resources/front.jpg");
-
-    MyPoint2D   p1(0, frontSource->height()-1), p2(0, 0), p3(frontSource->width()-1, 0),
-                p4(frontSource->width()-1, 0), p5(frontSource->width()-1, frontSource->height()-1), p6(0, frontSource->height());
-
-    Triangle t0 = Triangle(p1, p2, p3);
-    Triangle t1 = Triangle(p6, p5, p4);
-
-    Triangle tt0 = *(triangles[0].changeInto2D());
-    Triangle tt1 = *(triangles[1].changeInto2D());
-
-    TriangleTexturing::texturing(frontSource, t0, img, tt0);
-    TriangleTexturing::texturing(frontSource, t1, img, tt1);
 }
 
 void Cube::updateValues(TransformationMatrix4x4 *matrix) {
@@ -45,9 +46,7 @@ void Cube::updateValues(TransformationMatrix4x4 *matrix) {
 
         MyPoint3D newPoint;
 
-        //std::cout << points[i].getX() << " " << points[i].getY() << " " <<  points[i].getZ() << std::endl;
-
-        double tempPointTab[] = { (int)points[i].getX(), (int)points[i].getY(), (int)points[i].getZ(), 1.0 };
+        double tempPointTab[] = { (double)points[i].getX(), (double)points[i].getY(), (double)points[i].getZ(), 1.0 };
         QGenericMatrix<1, 4, double> tempPointM(tempPointTab);
 
         tempPointM = matrix->getTransformationMatrix() * tempPointM;
@@ -56,8 +55,6 @@ void Cube::updateValues(TransformationMatrix4x4 *matrix) {
         newPoint.setD(d);
 
         points[i] = newPoint;
-
-        //std::cout << points[i].getX() << " " << points[i].getY() << " " <<  points[i].getZ() << std::endl;
 
     }
 
@@ -75,29 +72,30 @@ void Cube::setPoints() {
 
     MyPoint3D tempPoint(50);
 
-    // 0
-    tempPoint.setXYZD(-x, -y, z, d);
+    // (wall, width, height)
+    // 0 (front, left, up)
+    tempPoint.setXYZD(-x, -y, -z, d);
     points.push_back(tempPoint);
-    // 1
-    tempPoint.setXYZD(-x, y, z, d);
-    points.push_back(tempPoint);
-    // 2
-    tempPoint.setXYZD(x, y, z, d);
-    points.push_back(tempPoint);
-    // 3
-    tempPoint.setXYZD(x, -y, z, d);
-    points.push_back(tempPoint);
-    // 4
-    tempPoint.setXYZD(x, -y, -z, d);
-    points.push_back(tempPoint);
-    // 5
-    tempPoint.setXYZD(x, y, -z, d);
-    points.push_back(tempPoint);
-    // 6
+    // 1 (front, left, down)
     tempPoint.setXYZD(-x, y, -z, d);
     points.push_back(tempPoint);
-    // 7
-    tempPoint.setXYZD(-x, -y, -z, d);
+    // 2 (front, right, down)
+    tempPoint.setXYZD(x, y, -z, d);
+    points.push_back(tempPoint);
+    // 3 (front, right, up)
+    tempPoint.setXYZD(x, -y, -z, d);
+    points.push_back(tempPoint);
+    // 4 (back, left, up)
+    tempPoint.setXYZD(-x, -y, z, d);
+    points.push_back(tempPoint);
+    // 5 (back, left, down)
+    tempPoint.setXYZD(-x, y, z, d);
+    points.push_back(tempPoint);
+    // 6 (back, right, down)
+    tempPoint.setXYZD(x, y, z, d);
+    points.push_back(tempPoint);
+    // 7 (back, right, up)
+    tempPoint.setXYZD(x, -y, z, d);
     points.push_back(tempPoint);
 }
 
@@ -105,29 +103,70 @@ void Cube::setTriangles() {
     triangles.clear();
 
     Triangle3D tempTriangle;
-
-    tempTriangle.setPoints(points[0], points[3], points[4]);
-    triangles.push_back(tempTriangle);
-    tempTriangle.setPoints(points[0], points[7], points[4]);
-    triangles.push_back(tempTriangle);
-    tempTriangle.setPoints(points[2], points[1], points[6]);
-    triangles.push_back(tempTriangle);
-    tempTriangle.setPoints(points[2], points[5], points[6]);
-    triangles.push_back(tempTriangle);
-    tempTriangle.setPoints(points[3], points[4], points[5]);
-    triangles.push_back(tempTriangle);
-    tempTriangle.setPoints(points[3], points[2], points[5]);
-    triangles.push_back(tempTriangle);
-    tempTriangle.setPoints(points[1], points[0], points[7]);
-    triangles.push_back(tempTriangle);
-    tempTriangle.setPoints(points[1], points[6], points[7]);
-    triangles.push_back(tempTriangle);
+    // (wall, triangle)
+    // front-down
     tempTriangle.setPoints(points[0], points[1], points[2]);
     triangles.push_back(tempTriangle);
-    tempTriangle.setPoints(points[0], points[3], points[2]);
+    // front, up
+    tempTriangle.setPoints(points[2], points[3], points[0]);
     triangles.push_back(tempTriangle);
-    tempTriangle.setPoints(points[5], points[6], points[7]);
+    // back, down
+    tempTriangle.setPoints(points[7], points[6], points[5]);
     triangles.push_back(tempTriangle);
+    // back, up
     tempTriangle.setPoints(points[5], points[4], points[7]);
     triangles.push_back(tempTriangle);
+    // left, down
+    tempTriangle.setPoints(points[4], points[5], points[1]);
+    triangles.push_back(tempTriangle);
+    // left, up
+    tempTriangle.setPoints(points[1], points[0], points[4]);
+    triangles.push_back(tempTriangle);
+    // right, down
+    tempTriangle.setPoints(points[3], points[2], points[6]);
+    triangles.push_back(tempTriangle);
+    // right, up
+    tempTriangle.setPoints(points[6], points[7], points[3]);
+    triangles.push_back(tempTriangle);
+    // up, down
+    tempTriangle.setPoints(points[4], points[0], points[3]);
+    triangles.push_back(tempTriangle);
+    // up, up
+    tempTriangle.setPoints(points[3], points[7], points[4]);
+    triangles.push_back(tempTriangle);
+    // down, down
+    tempTriangle.setPoints(points[1], points[5], points[6]);
+    triangles.push_back(tempTriangle);
+    tempTriangle.setPoints(points[6], points[2], points[1]);
+    triangles.push_back(tempTriangle);
+}
+
+void Cube::texturingWalls(QImage *img) {
+
+    for(int i = 0; i < 6; i++) {
+        QImage *wallSource = new QImage(IMAGE_PATHS[i].c_str());
+
+        MyPoint2D   p0(0, 0),
+                    p1(0, wallSource->height()-1),
+                    p2(wallSource->width()-1, wallSource->height()-1),
+                    p3(wallSource->width(), 0);
+
+        Triangle    sourceTriangleDown = Triangle(p0, p1, p2),
+                    sourceTriangleUp = Triangle(p2, p3, p0),
+                    wallTriangleDown = *(triangles[2*i].changeInto2D()),
+                    wallTriangleUp = *(triangles[2*i + 1].changeInto2D());
+
+        if(isVisible(wallTriangleDown)) TriangleTexturing::texturing(wallSource, sourceTriangleDown, img, wallTriangleDown);
+        if(isVisible(wallTriangleUp)) TriangleTexturing::texturing(wallSource, sourceTriangleUp, img, wallTriangleUp);
+
+        delete wallSource;
+    }
+
+}
+
+bool Cube::isVisible(Triangle triangle) {
+
+    // TODO: add implementation
+
+    return true;
 }

@@ -25,6 +25,8 @@ public:
 
 private:
 
+    static std::string IMAGE_PATHS[6];
+
     int x;
     int y;
     int z;
@@ -38,8 +40,26 @@ private:
      */
     void setValues();
 
+    /**
+     * deklaracja na sztywno wszystkich osmiu punktow budujacych kostke
+     */
     void setPoints();
+
+    /**
+     * deklaracja na sztywno wszystkich dwunastu trojkatow budujacych kostke
+     */
     void setTriangles();
+
+    /**
+     * metoda teksturujaca wszystkie sciany kostki
+     */
+    void texturingWalls(QImage* img);
+
+    /**
+     * metoda sprawdzajaca, czy dany trojkat zrzutowany na 2D jest widoczny dla obserwatora
+     * @return prawda jesli widoczny, falsz w przeciwnym wypadku
+     */
+    bool isVisible(Triangle triangle);
 };
 
 #endif // CUBE_H
