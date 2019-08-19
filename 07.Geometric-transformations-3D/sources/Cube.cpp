@@ -166,7 +166,8 @@ void Cube::texturingWalls(QImage *img) {
 
 bool Cube::isVisible(Triangle triangle) {
 
-    // TODO: add implementation
+    double result = (triangle.getPoint(1).getX() - triangle.getPoint(0).getX()) * (triangle.getPoint(2).getY() - triangle.getPoint(0).getY())
+                    - (triangle.getPoint(2).getX() - triangle.getPoint(0).getX()) * (triangle.getPoint(1).getY() - triangle.getPoint(0).getY());
 
-    return true;
+    return result < 0;
 }
