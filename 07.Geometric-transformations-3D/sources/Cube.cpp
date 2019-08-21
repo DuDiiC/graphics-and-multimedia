@@ -3,12 +3,12 @@
 #include <includes/TriangleTexturing.h>
 
 std::string Cube::IMAGE_PATHS[] = {
-        "/home/maciejdudek/Pulpit/LGM koncowe/Fourth-Semester-Graphics/07.Geometric-transformations-3D/resources/red.png",
-        "/home/maciejdudek/Pulpit/LGM koncowe/Fourth-Semester-Graphics/07.Geometric-transformations-3D/resources/green.jpg",
-        "/home/maciejdudek/Pulpit/LGM koncowe/Fourth-Semester-Graphics/07.Geometric-transformations-3D/resources/blue.jpg",
-        "/home/maciejdudek/Pulpit/LGM koncowe/Fourth-Semester-Graphics/07.Geometric-transformations-3D/resources/yellow.jpg",
-        "/home/maciejdudek/Pulpit/LGM koncowe/Fourth-Semester-Graphics/07.Geometric-transformations-3D/resources/white.jpg",
-        "/home/maciejdudek/Pulpit/LGM koncowe/Fourth-Semester-Graphics/07.Geometric-transformations-3D/resources/purple.jpg"
+        "resources/red.png",
+        "resources/green.jpg",
+        "resources/blue.jpg",
+        "resources/yellow.jpg",
+        "resources/white.jpg",
+        "resources/purple.jpg"
 };
 
 Cube::Cube(int a, int d) {
@@ -43,7 +43,6 @@ void Cube::draw(QImage *img, int RGBColor) {
 
 void Cube::updateValues(TransformationMatrix4x4 *matrix) {
     for(int i = 0; i < points.size(); i++) {
-
         MyPoint3D newPoint;
 
         double tempPointTab[] = { (double)points[i].getX(), (double)points[i].getY(), (double)points[i].getZ(), 1.0 };
@@ -55,14 +54,11 @@ void Cube::updateValues(TransformationMatrix4x4 *matrix) {
         newPoint.setD(d);
 
         points[i] = newPoint;
-
     }
-
     setTriangles();
 }
 
 void Cube::setValues() {
-
     setPoints();
     setTriangles();
 }
@@ -141,25 +137,27 @@ void Cube::setTriangles() {
     triangles.push_back(tempTriangle);
 }
 
+// TODO: that function need optimalization
 void Cube::texturingWalls(QImage *img) {
 
     for(int i = 0; i < 6; i++) {
         QImage *wallSource = new QImage(IMAGE_PATHS[i].c_str());
 
-        MyPoint2D   p0(0, 0),
-                    p1(0, wallSource->height()-1),
-                    p2(wallSource->width()-1, wallSource->height()-1),
-                    p3(wallSource->width(), 0);
+        MyPoint2D   *p0 = new MyPoint2D(0, 0);
+        MyPoint2D   *p1 = new MyPoint2D(0, wallSource->height()-1);
+        MyPoint2D   *p2 = new MyPoint2D(wallSource->width()-1, wallSource->height()-1);
+        MyPoint2D   *p3 = new MyPoint2D(wallSource->width(), 0);
 
-        Triangle    sourceTriangleDown = Triangle(p0, p1, p2),
-                    sourceTriangleUp = Triangle(p2, p3, p0),
-                    wallTriangleDown = *(triangles[2*i].changeInto2D()),
-                    wallTriangleUp = *(triangles[2*i + 1].changeInto2D());
+        Triangle    *sourceTriangleDown = new Triangle(*p0, *p1, *p2);
+        Triangle    *sourceTriangleUp = new Triangle(*p2, *p3, *p0);
+        Triangle    *wallTriangleDown = triangles[2*i].changeInto2D();
+        Triangle    *wallTriangleUp = triangles[2*i + 1].changeInto2D();
 
-        if(isVisible(wallTriangleDown)) TriangleTexturing::texturing(wallSource, sourceTriangleDown, img, wallTriangleDown);
-        if(isVisible(wallTriangleUp)) TriangleTexturing::texturing(wallSource, sourceTriangleUp, img, wallTriangleUp);
+        if(isVisible(*wallTriangleDown)) TriangleTexturing::texturing(wallSource, sourceTriangleDown, img, wallTriangleDown);
+        if(isVisible(*wallTriangleUp)) TriangleTexturing::texturing(wallSource, sourceTriangleUp, img, wallTriangleUp);
 
         delete wallSource;
+        delete p0, p1, p2, p3, sourceTriangleDown, sourceTriangleUp, wallTriangleDown, wallTriangleUp;
     }
 
 }

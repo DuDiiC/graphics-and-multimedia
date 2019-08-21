@@ -19,7 +19,7 @@ public:
     static void resetSourceTrianglePoints();
     static void resetTexturedTrianglePoint();
 
-    static void texturing(QImage *sourceImg, Triangle sourceTriangle, QImage *texturedImg, Triangle texturedTriangle);
+    static void texturing(QImage *sourceImg, Triangle *sourceTriangle, QImage *texturedImg, Triangle *texturedTriangle);
 
 private:
 

@@ -160,6 +160,7 @@ int main(int argc, char **argv ) {
     app.connect(translationXSlider, SIGNAL(valueChanged(int)), myWidget, SLOT(setXTranslation(int)));
     app.connect(translationYSlider, SIGNAL(valueChanged(int)), myWidget, SLOT(setYTranslation(int)));
     app.connect(translationZSlider, SIGNAL(valueChanged(int)), myWidget, SLOT(setZTranslation(int)));
+    app.connect(homogeneousScalingCheckBox, SIGNAL(clicked(bool)), myWidget, SLOT(setHomogeneousScaling(bool)));
     app.connect(scalingXSlider, SIGNAL(valueChanged(int)), myWidget, SLOT(setXScaling(int)));
     app.connect(scalingYSlider, SIGNAL(valueChanged(int)), myWidget, SLOT(setYScaling(int)));
     app.connect(scalingZSlider, SIGNAL(valueChanged(int)), myWidget, SLOT(setZScaling(int)));

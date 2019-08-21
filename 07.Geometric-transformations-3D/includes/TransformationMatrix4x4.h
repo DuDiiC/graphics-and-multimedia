@@ -9,22 +9,24 @@
 class TransformationMatrix4x4 {
 
 public:
-    TransformationMatrix4x4(int tX, int tY, int tZ,
+    TransformationMatrix4x4(int X0, int Y0, int Z0,
+                            int tX, int tY, int tZ,
                             double sX, double sY, double sZ,
                             double alphaX, double alphaY, double alphaZ,
                             QImage *img) :
-        tx(tX), ty(tY), tz(tZ), sx(sX), sy(sY), sz(sZ),
-        alphax(alphaX), alphay(alphaY), alphaz(alphaZ)/*,
-        x0(img->width()/2), y0(img->height()/2)*/ {
+                                x0(X0), y0(Y0), z0(Z0), tx(tX), ty(tY), tz(tZ), sx(sX), sy(sY), sz(sZ),
+                                alphax(alphaX), alphay(alphaY), alphaz(alphaZ)/*,
+                                x0(img->width()/2), y0(img->height()/2)*/ {
     }
 
-    TransformationMatrix4x4(int tX, int tY, int tZ,
+    TransformationMatrix4x4(int X0, int Y0, int Z0,
+                            int tX, int tY, int tZ,
                             double sX, double sY, double sZ,
                             int degreesX, int degreesY, int degreesZ,
                             QImage *img) :
-        tx(tX), ty(tY), tz(tZ), sx(sX), sy(sY), sz(sZ),
-        alphax((double)degreesX/M_PI), alphay((double)degreesY/M_PI), alphaz((double)degreesZ/M_PI)/*,
-        x0(img->width()/2), y0(img->height()/2)*/ {
+                                x0(X0), y0(Y0), z0(Z0), tx(tX), ty(tY), tz(tZ), sx(sX), sy(sY), sz(sZ),
+                                alphax((double)degreesX/M_PI), alphay((double)degreesY/M_PI), alphaz((double)degreesZ/M_PI)/*,
+                                x0(img->width()/2), y0(img->height()/2)*/ {
     }
 
     ~TransformationMatrix4x4() {
@@ -89,9 +91,9 @@ private:
     /**
      * center point coordinates
      */
-    int x0;
-    int y0;
-    int z0; /// ???
+    int x0 = 0;
+    int y0 = 0;
+    int z0 = 0; /// ???
 
     /**
      * values to translation
