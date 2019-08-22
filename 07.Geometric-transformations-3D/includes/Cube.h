@@ -53,7 +53,7 @@ private:
     /**
      * metoda teksturujaca wszystkie sciany kostki
      */
-    void texturingWalls(QImage* img);
+    void texturingWalls(QImage* img, bool uniformColor = false, int *colors = nullptr);
 
     /**
      * metoda sprawdzajaca, czy dany trojkat zrzutowany na 2D jest widoczny dla obserwatora

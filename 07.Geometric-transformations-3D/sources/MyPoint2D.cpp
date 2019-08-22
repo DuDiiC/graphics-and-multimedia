@@ -5,8 +5,8 @@ void MyPoint2D::setPixel(QImage *image, int RGBColor) {
     uchar* bits = (uchar*)image->bits();
 
     int RGBcolorBlue = RGBColor & 255;
-    int RGBcolorGreen = (RGBColor >> 2) & 255;
-    int RGBcolorRed = (RGBColor >> 4) & 255;
+    int RGBcolorGreen = (RGBColor >> 8) & 255;
+    int RGBcolorRed = (RGBColor >> 16) & 255;
 
     if(this->isOnWidget(image)) {
         bits[4*(this->x + this->y*image->width())] = RGBcolorBlue; // blue

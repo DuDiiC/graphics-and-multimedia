@@ -1,15 +1,8 @@
 #include "includes/TransformationMatrix4x4.h"
 
 void TransformationMatrix4x4::updateMatrix() {
-    // TODO:
-    // ADD IMPLEMENTATION
 
-//    double matrixTab[] = {
-//        1.0, 0.0, 0.0, (double)x0,
-//        0.0, 1.0, 0.0, (double)y0,
-//        0.0, 0.0, 1.0, (double)z0,
-//        0.0, 0.0, 0.0, 1.0
-//    };
+    //delete transformationMatrix;
 
     double matrixTab[] = {
         sx * cos(alphay) * cos(alphaz), -sx * cos(alphay) * sin(alphaz), sx * sin(alphay), sx * y0 * cos(alphay) * sin(alphaz) - sx * x0 * cos(alphay) * cos(alphaz) - sx * z0 * sin(alphay) + x0 + tx,
@@ -18,5 +11,5 @@ void TransformationMatrix4x4::updateMatrix() {
         0.0, 0.0, 0.0, 1.0
     };
 
-    transformationMatrix = QGenericMatrix<4, 4, double>(matrixTab);
+    transformationMatrix = new QGenericMatrix<4, 4, double>(matrixTab);
 }

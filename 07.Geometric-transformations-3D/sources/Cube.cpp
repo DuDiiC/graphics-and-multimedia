@@ -32,13 +32,21 @@ void Cube::draw(QImage *img, int RGBColor) {
     img->fill(Qt::black);
 
     // drawing textures
-    texturingWalls(img);
+    int colors[6] = {
+            0xcc0000, //red
+            0x00cc00, //green
+            0x0000cc, //blue
+            0xcccc00, //yellow
+            0xcccccc, //white
+            0xcc00cc // pink
+    };
+    texturingWalls(img, true, colors);
+    // texturingWalls(img);
 
     // drawing cube's edges
     for(int i = 0; i < triangles.size(); i++) {
         triangles[i].changeInto2D()->draw(img, RGBColor);
     }
-
 }
 
 void Cube::updateValues(TransformationMatrix4x4 *matrix) {
@@ -48,7 +56,7 @@ void Cube::updateValues(TransformationMatrix4x4 *matrix) {
         double tempPointTab[] = { (double)points[i].getX(), (double)points[i].getY(), (double)points[i].getZ(), 1.0 };
         QGenericMatrix<1, 4, double> tempPointM(tempPointTab);
 
-        tempPointM = matrix->getTransformationMatrix() * tempPointM;
+        tempPointM = *(matrix->getTransformationMatrix()) * tempPointM;
 
         newPoint.setXYZ(tempPointM.data()[0], tempPointM.data()[1], tempPointM.data()[2]);
         newPoint.setD(d);
@@ -138,28 +146,58 @@ void Cube::setTriangles() {
 }
 
 // TODO: that function need optimalization
-void Cube::texturingWalls(QImage *img) {
+void Cube::texturingWalls(QImage *img, bool uniformColor, int *colors) {
+
+    MyPoint2D *p0, *p1, *p2, *p3;
+    Triangle *sourceTriangleDown, *sourceTriangleUp, *wallTriangleDown, *wallTriangleUp;
+    QImage *wallSource;
+
+    int selectedColor;
 
     for(int i = 0; i < 6; i++) {
-        QImage *wallSource = new QImage(IMAGE_PATHS[i].c_str());
 
-        MyPoint2D   *p0 = new MyPoint2D(0, 0);
-        MyPoint2D   *p1 = new MyPoint2D(0, wallSource->height()-1);
-        MyPoint2D   *p2 = new MyPoint2D(wallSource->width()-1, wallSource->height()-1);
-        MyPoint2D   *p3 = new MyPoint2D(wallSource->width(), 0);
+        if(uniformColor) { // fill uniform color
 
-        Triangle    *sourceTriangleDown = new Triangle(*p0, *p1, *p2);
-        Triangle    *sourceTriangleUp = new Triangle(*p2, *p3, *p0);
-        Triangle    *wallTriangleDown = triangles[2*i].changeInto2D();
-        Triangle    *wallTriangleUp = triangles[2*i + 1].changeInto2D();
+            selectedColor = colors[i];
 
-        if(isVisible(*wallTriangleDown)) TriangleTexturing::texturing(wallSource, sourceTriangleDown, img, wallTriangleDown);
-        if(isVisible(*wallTriangleUp)) TriangleTexturing::texturing(wallSource, sourceTriangleUp, img, wallTriangleUp);
+            wallTriangleDown = triangles[2 * i].changeInto2D();
+            wallTriangleUp = triangles[2 * i + 1].changeInto2D();
 
-        delete wallSource;
-        delete p0, p1, p2, p3, sourceTriangleDown, sourceTriangleUp, wallTriangleDown, wallTriangleUp;
+            if (isVisible(*wallTriangleDown)) {
+                TriangleTexturing::texturing(selectedColor, img, wallTriangleDown);
+            }
+            if (isVisible(*wallTriangleUp)) {
+                TriangleTexturing::texturing(selectedColor, img, wallTriangleUp);
+            }
+
+            wallTriangleDown = wallTriangleUp = nullptr;
+
+        } else { // texturing from sources
+
+            wallSource = new QImage(IMAGE_PATHS[i].c_str());
+
+            p0 = new MyPoint2D(0, 0);
+            p1 = new MyPoint2D(0, wallSource->height() - 1);
+            p2 = new MyPoint2D(wallSource->width() - 1, wallSource->height() - 1);
+            p3 = new MyPoint2D(wallSource->width(), 0);
+
+            sourceTriangleDown = new Triangle(*p0, *p1, *p2);
+            sourceTriangleUp = new Triangle(*p2, *p3, *p0);
+            wallTriangleDown = triangles[2 * i].changeInto2D();
+            wallTriangleUp = triangles[2 * i + 1].changeInto2D();
+
+            if (isVisible(*wallTriangleDown)) {
+                TriangleTexturing::texturing(wallSource, sourceTriangleDown, img, wallTriangleDown);
+            }
+            if (isVisible(*wallTriangleUp)) {
+                TriangleTexturing::texturing(wallSource, sourceTriangleUp, img, wallTriangleUp);
+            }
+            delete wallSource;
+            delete p0; delete p1; delete p2; delete p3;
+            delete sourceTriangleDown; delete sourceTriangleUp;
+            wallTriangleDown = wallTriangleUp = nullptr;
+        }
     }
-
 }
 
 bool Cube::isVisible(Triangle triangle) {

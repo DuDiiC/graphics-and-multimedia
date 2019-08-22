@@ -20,6 +20,7 @@ public:
     static void resetTexturedTrianglePoint();
 
     static void texturing(QImage *sourceImg, Triangle *sourceTriangle, QImage *texturedImg, Triangle *texturedTriangle);
+    static void texturing(int sourceColor, QImage *texturedImg, Triangle *texturedTriangle);
 
 private:
 

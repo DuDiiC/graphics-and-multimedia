@@ -21,35 +21,60 @@ void TriangleTexturing::resetTexturedTrianglePoint() {
 }
 
 void TriangleTexturing::texturing(QImage *sourceImg, Triangle *sourceTriangle, QImage *texturedImg, Triangle *texturedTriangle) {
+    double u, v, w;
 
-    //if(sourceTrianglePoints == 3 && texturedTrianglePoints == 3) {
+    for (int x = texturedTriangle->minimumX(); x <= texturedTriangle->maximumX(); x++) {
+        for (int y = texturedTriangle->minimumY(); y < texturedTriangle->maximumY(); y++) {
 
-        double u, v, w;
+            MyPoint2D *tempPoint = new MyPoint2D(x, y);
+            v = calNumeratorV(*texturedTriangle, *tempPoint) / calDenominatorVW(*texturedTriangle, *tempPoint);
+            w = calNumeratorW(*texturedTriangle, *tempPoint) / calDenominatorVW(*texturedTriangle, *tempPoint);
+            u = calU(v, w);
 
-        for(int x = texturedTriangle->minimumX(); x <= texturedTriangle->maximumX(); x++) {
-            for(int y = texturedTriangle->minimumY(); y < texturedTriangle->maximumY(); y++) {
+            if (pointIsInTriangle(u, v, w)) {
+                double xt = u * (double) sourceTriangle->getPoint(0).getX() +
+                            v * (double) sourceTriangle->getPoint(1).getX() +
+                            w * (double) sourceTriangle->getPoint(2).getX();
+                double yt = u * (double) sourceTriangle->getPoint(0).getY() +
+                            v * (double) sourceTriangle->getPoint(1).getY() +
+                            w * (double) sourceTriangle->getPoint(2).getY();
 
-                MyPoint2D *tempPoint = new MyPoint2D(x, y);
-                v = calNumeratorV(*texturedTriangle, *tempPoint)/calDenominatorVW(*texturedTriangle, *tempPoint);
-                w = calNumeratorW(*texturedTriangle, *tempPoint)/calDenominatorVW(*texturedTriangle, *tempPoint);
-                u = calU(v, w);
+                MyPoint2D *tempPoint2 = new MyPoint2D(xt, yt);
 
-                if(pointIsInTriangle(u, v, w)) {
-                    double xt = u * (double)sourceTriangle->getPoint(0).getX() + v * (double)sourceTriangle->getPoint(1).getX() + w * (double)sourceTriangle->getPoint(2).getX();
-                    double yt = u * (double)sourceTriangle->getPoint(0).getY() + v * (double)sourceTriangle->getPoint(1).getY() + w * (double)sourceTriangle->getPoint(2).getY();
+                tempPoint->setPixel(texturedImg,
+                                    doubleLineInterpolation(sourceImg, tempPoint2->getX(), tempPoint2->getY()));
 
-                    MyPoint2D *tempPoint2 = new MyPoint2D(xt, yt);
-
-                    tempPoint->setPixel(texturedImg , doubleLineInterpolation(sourceImg, tempPoint2->getX(), tempPoint2->getY()));
-
-                    delete tempPoint2;
-                }
-
-                delete tempPoint;
+                delete tempPoint2;
             }
+
+            delete tempPoint;
         }
-    //}
+    }
 }
+
+void TriangleTexturing::texturing(int sourceColor, QImage *texturedImg, Triangle *texturedTriangle) {
+    double u, v, w;
+    MyPoint2D *tempPoint, *tempPoint2;
+
+    for (int x = texturedTriangle->minimumX(); x <= texturedTriangle->maximumX(); x++) {
+        for (int y = texturedTriangle->minimumY(); y < texturedTriangle->maximumY(); y++) {
+
+            tempPoint = new MyPoint2D(x, y);
+            v = calNumeratorV(*texturedTriangle, *tempPoint) / calDenominatorVW(*texturedTriangle, *tempPoint);
+            w = calNumeratorW(*texturedTriangle, *tempPoint) / calDenominatorVW(*texturedTriangle, *tempPoint);
+            u = calU(v, w);
+
+            if (pointIsInTriangle(u, v, w)) {
+                tempPoint2 = new MyPoint2D(x, y);
+                tempPoint->setPixel(texturedImg, sourceColor);
+                delete tempPoint2;
+            }
+
+            delete tempPoint;
+        }
+    }
+}
+
 
 double TriangleTexturing::calDenominatorVW(Triangle triangle, MyPoint2D point) {
     return (double)(((triangle.getPoint(1).getX() - triangle.getPoint(0).getX()) * (triangle.getPoint(2).getY() - triangle.getPoint(0).getY())) -

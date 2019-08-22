@@ -78,7 +78,7 @@ int main(int argc, char **argv ) {
 
     QLabel *translationZLabel = new QLabel("z");
     QSlider *translationZSlider = new QSlider(Qt::Horizontal);
-    translationZSlider->setRange(-300, 300);
+    translationZSlider->setRange(-100, 300);
     translationZSlider->setValue(0);
 
     QHBoxLayout *translationZLayout = new QHBoxLayout();

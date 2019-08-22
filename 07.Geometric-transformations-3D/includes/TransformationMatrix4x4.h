@@ -71,7 +71,7 @@ public:
     }
     double getAlphaZ() { return alphaz; }
 
-    QGenericMatrix<4, 4, double> getTransformationMatrix() { return transformationMatrix; }
+    QGenericMatrix<4, 4, double>* getTransformationMatrix() { return transformationMatrix; }
 
     /**
      * updateMatrix is method calling after modyfying some values in transformation matrix
@@ -86,7 +86,7 @@ private:
      * multiplication:
      * ???
      */
-    QGenericMatrix<4, 4, double> transformationMatrix;
+    QGenericMatrix<4, 4, double> *transformationMatrix;
 
     /**
      * center point coordinates
