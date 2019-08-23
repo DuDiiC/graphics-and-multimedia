@@ -24,7 +24,7 @@ public:
 
 private:
 
-    static double calDenominatorVW(Triangle triangle, MyPoint2D point);
+    static double calDenominatorVW(Triangle triangle, const MyPoint2D& point);
     static double calNumeratorV(Triangle triangle, MyPoint2D point);
     static double calNumeratorW(Triangle triangle, MyPoint2D point);
     static double calU(double v, double w);

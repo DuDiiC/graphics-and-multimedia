@@ -60,7 +60,7 @@ public:
     /**
      * The same function as above, but using QColor class instead of hex int value for color.
      */
-    void setPixel(QImage *image, QColor RGBColor);
+    void setPixel(QImage *image, const QColor& RGBColor);
 
     /**
      * Gives the pixel color.

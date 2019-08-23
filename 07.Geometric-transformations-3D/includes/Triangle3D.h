@@ -11,8 +11,6 @@ class Triangle3D {
 
 public:
 
-
-
     Triangle3D() {
     }
 

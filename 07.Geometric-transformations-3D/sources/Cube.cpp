@@ -44,16 +44,16 @@ void Cube::draw(QImage *img, int RGBColor) {
     // texturingWalls(img);
 
     // drawing cube's edges
-    for(int i = 0; i < triangles.size(); i++) {
-        triangles[i].changeInto2D()->draw(img, RGBColor);
+    for(auto & triangle : triangles) {
+        triangle.changeInto2D()->draw(img, RGBColor);
     }
 }
 
 void Cube::updateValues(TransformationMatrix4x4 *matrix) {
-    for(int i = 0; i < points.size(); i++) {
+    for(auto & point : points) {
         MyPoint3D newPoint;
 
-        double tempPointTab[] = { (double)points[i].getX(), (double)points[i].getY(), (double)points[i].getZ(), 1.0 };
+        double tempPointTab[] = { (double)point.getX(), (double)point.getY(), (double)point.getZ(), 1.0 };
         QGenericMatrix<1, 4, double> tempPointM(tempPointTab);
 
         tempPointM = *(matrix->getTransformationMatrix()) * tempPointM;
@@ -61,7 +61,7 @@ void Cube::updateValues(TransformationMatrix4x4 *matrix) {
         newPoint.setXYZ(tempPointM.data()[0], tempPointM.data()[1], tempPointM.data()[2]);
         newPoint.setD(d);
 
-        points[i] = newPoint;
+        point = newPoint;
     }
     setTriangles();
 }
@@ -69,9 +69,15 @@ void Cube::updateValues(TransformationMatrix4x4 *matrix) {
 void Cube::setValues() {
     setPoints();
     setTriangles();
+    setWallVectors();
+//    for(auto i : normalWallVectors) { std::cout << i[0] << " " << i[1] << " " << i[2] << std::endl; }
+    setAvgVertexVectors();
+//    for(auto i : avgNormalVertexVectors) { std::cout << Vector3D::length(i) << std::endl; }
 }
 
 void Cube::setPoints() {
+
+//    for(auto &i : points) { delete &i; }
     points.clear();
 
     MyPoint3D tempPoint(50);
@@ -104,6 +110,8 @@ void Cube::setPoints() {
 }
 
 void Cube::setTriangles() {
+
+//    for(auto &i : triangles) { delete &i; }
     triangles.clear();
 
     Triangle3D tempTriangle;
@@ -145,8 +153,100 @@ void Cube::setTriangles() {
     triangles.push_back(tempTriangle);
 }
 
+void Cube::setWallVectors() {
+    // dla kazdej sciany, tworzymy wektor normalny przy uzyciu punktow 'dolnego' trojkata:
+    double wallVectors[6][3];
+    double *temp;
+
+    for(auto &i : normalWallVectors) { delete i; }
+    normalWallVectors.clear();
+    for(auto i = 0; i < 6; i++) {
+        temp =  Vector3D::normalize(
+                    Vector3D::crossProduct(
+                        Vector3D::createVector(
+                                triangles[2*i].getPoint(1),
+                                triangles[2*i].getPoint(2)),
+                        Vector3D::createVector(
+                                triangles[2*i].getPoint(1),
+                                triangles[2*i].getPoint(0))));
+        wallVectors[i][0] = temp[0];
+        wallVectors[i][1] = temp[1];
+        wallVectors[i][2] = temp[2];
+        normalWallVectors.push_back(&wallVectors[i][0]);
+    }
+    /**
+    // 0 - frontWall
+//    temp = Vector3D::normalize(Vector3D::crossProduct(Vector3D::createVector(&points[1], &points[2]), Vector3D::createVector(&points[1], &points[0])));
+//    wallVectors[0][0] = temp[0];
+//    wallVectors[0][1] = temp[0];
+//    wallVectors[0][2] = temp[0];
+//    // 1 - sciana tylnia
+//    temp = Vector3D::normalize(Vector3D::crossProduct(Vector3D::createVector(&points[6], &points[5]), Vector3D::createVector(&points[6], &points[7])));
+//    wallVectors[1][0] = temp[0];
+//    wallVectors[1][1] = temp[1];
+//    wallVectors[1][2] = temp[2];
+//    // 2 - sciana lewa
+//    temp = Vector3D::normalize(Vector3D::crossProduct(Vector3D::createVector(&points[5], &points[1]), Vector3D::createVector(&points[5], &points[4])));
+//    wallVectors[2][0] = temp[0];
+//    wallVectors[2][1] = temp[1];
+//    wallVectors[2][2] = temp[2];
+//    // 3 - sciana prawa
+//    temp = Vector3D::normalize(Vector3D::crossProduct(Vector3D::createVector(&points[], &points[]), Vector3D::createVector(&points[], &points[])));
+//    wallVectors[3][0] = temp[0];
+//    wallVectors[3][1] = temp[1];
+//    wallVectors[3][2] = temp[2];
+//    // 4 - sciana gorna
+//    temp = Vector3D::normalize(Vector3D::crossProduct(Vector3D::createVector(&points[], &points[]), Vector3D::createVector(&points[], &points[])));
+//    wallVectors[4][0] = temp[0];
+//    wallVectors[4][1] = temp[1];
+//    wallVectors[4][2] = temp[2];
+//    // 5 - sciana dolna
+//    temp = Vector3D::normalize(Vector3D::crossProduct(Vector3D::createVector(&points[], &points[]), Vector3D::createVector(&points[], &points[])));
+//    wallVectors[5][0] = temp[0];
+//    wallVectors[5][1] = temp[1];
+//    wallVectors[5][2] = temp[2];
+
+//    for(int i = 0; i < 6; i++) {
+//        normalWallVectors.push_back(&wallVectors[i][0]);
+//    } */
+}
+
+void Cube::setAvgVertexVectors() {
+    // dla kazdego wierzcholka na podstawie wektorow normalnych scian do ktorych nalezy, obliczamy sredni wektor normalny
+    double VertexVectors[8][3];
+    double *temp;
+
+    for(auto &i : avgNormalVertexVectors) { delete i; }
+    avgNormalVertexVectors.clear();
+
+    // point 0
+    temp = Vector3D::avgVectorVertex(normalWallVectors[0], normalWallVectors[2], normalWallVectors[4]);
+    avgNormalVertexVectors.push_back(temp);
+    // point 1
+    temp = Vector3D::avgVectorVertex(normalWallVectors[0], normalWallVectors[2], normalWallVectors[5]);
+    avgNormalVertexVectors.push_back(temp);
+    // point 2
+    temp = Vector3D::avgVectorVertex(normalWallVectors[0], normalWallVectors[3], normalWallVectors[5]);
+    avgNormalVertexVectors.push_back(temp);
+    // point 3
+    temp = Vector3D::avgVectorVertex(normalWallVectors[0], normalWallVectors[3], normalWallVectors[4]);
+    avgNormalVertexVectors.push_back(temp);
+    // point 4
+    temp = Vector3D::avgVectorVertex(normalWallVectors[1], normalWallVectors[2], normalWallVectors[4]);
+    avgNormalVertexVectors.push_back(temp);
+    // point 5
+    temp = Vector3D::avgVectorVertex(normalWallVectors[1], normalWallVectors[2], normalWallVectors[5]);
+    avgNormalVertexVectors.push_back(temp);
+    // point 6
+    temp = Vector3D::avgVectorVertex(normalWallVectors[1], normalWallVectors[3], normalWallVectors[5]);
+    avgNormalVertexVectors.push_back(temp);
+    // point 7
+    temp = Vector3D::avgVectorVertex(normalWallVectors[1], normalWallVectors[3], normalWallVectors[4]);
+    avgNormalVertexVectors.push_back(temp);
+}
+
 // TODO: that function need optimalization
-void Cube::texturingWalls(QImage *img, bool uniformColor, int *colors) {
+void Cube::texturingWalls(QImage *img, bool uniformColor, const int *colors) {
 
     MyPoint2D *p0, *p1, *p2, *p3;
     Triangle *sourceTriangleDown, *sourceTriangleUp, *wallTriangleDown, *wallTriangleUp;

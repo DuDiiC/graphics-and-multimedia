@@ -4,6 +4,7 @@
 #include <QGenericMatrix>
 
 #include "MyPoint3D.h"
+#include "Vector3D.h"
 #include "Triangle3D.h"
 #include "TransformationMatrix4x4.h"
 
@@ -35,6 +36,9 @@ private:
     std::vector < MyPoint3D > points;
     std::vector < Triangle3D > triangles;
 
+    std::vector < double* > normalWallVectors;
+    std::vector < double* > avgNormalVertexVectors;
+
     /**
      * na podstawie wspolrzednych ustala wektor punktow i wektor trojkatow
      */
@@ -51,15 +55,27 @@ private:
     void setTriangles();
 
     /**
+     * ustawia wektory normalne dla kazdej sciany
+     */
+    void setWallVectors();
+
+    /**
+     * ustawia srednie wektory normalne dla kazdego wierzcholka
+     */
+    void setAvgVertexVectors();
+
+    /**
      * metoda teksturujaca wszystkie sciany kostki
      */
-    void texturingWalls(QImage* img, bool uniformColor = false, int *colors = nullptr);
+    void texturingWalls(QImage* img, bool uniformColor = false, const int *colors = nullptr);
 
     /**
      * metoda sprawdzajaca, czy dany trojkat zrzutowany na 2D jest widoczny dla obserwatora
      * @return prawda jesli widoczny, falsz w przeciwnym wypadku
      */
-    bool isVisible(Triangle triangle);
+    static bool isVisible(Triangle triangle);
+
+
 };
 
 #endif // CUBE_H

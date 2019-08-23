@@ -16,7 +16,7 @@ void MyPoint2D::setPixel(QImage *image, int RGBColor) {
     }
 }
 
-void MyPoint2D::setPixel(QImage *image, QColor RGBColor) {
+void MyPoint2D::setPixel(QImage *image, const QColor& RGBColor) {
 
     uchar* bits = (uchar*)image->bits();
 
@@ -51,10 +51,8 @@ void MyPoint2D::enlarge(QImage *image, int scale, int RGBColor) {
 }
 
 bool MyPoint2D::isInArea(MyPoint2D point, int scale) {
-    if(this->x >= point.getX()-scale && this->x <= point.getX()+scale &&
-       this->y >= point.getY()-scale && this->y <= point.getY()+scale)
-        return true;
-    return false;
+    return (this->x >= point.getX() - scale && this->x <= point.getX() + scale &&
+           this->y >= point.getY() - scale && this->y <= point.getY() + scale);
 }
 
 bool MyPoint2D::isOnWidget(QImage *image) {

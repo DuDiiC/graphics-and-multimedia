@@ -26,7 +26,7 @@ void TriangleTexturing::texturing(QImage *sourceImg, Triangle *sourceTriangle, Q
     for (int x = texturedTriangle->minimumX(); x <= texturedTriangle->maximumX(); x++) {
         for (int y = texturedTriangle->minimumY(); y < texturedTriangle->maximumY(); y++) {
 
-            MyPoint2D *tempPoint = new MyPoint2D(x, y);
+            auto *tempPoint = new MyPoint2D(x, y);
             v = calNumeratorV(*texturedTriangle, *tempPoint) / calDenominatorVW(*texturedTriangle, *tempPoint);
             w = calNumeratorW(*texturedTriangle, *tempPoint) / calDenominatorVW(*texturedTriangle, *tempPoint);
             u = calU(v, w);
@@ -39,7 +39,7 @@ void TriangleTexturing::texturing(QImage *sourceImg, Triangle *sourceTriangle, Q
                             v * (double) sourceTriangle->getPoint(1).getY() +
                             w * (double) sourceTriangle->getPoint(2).getY();
 
-                MyPoint2D *tempPoint2 = new MyPoint2D(xt, yt);
+                auto *tempPoint2 = new MyPoint2D(xt, yt);
 
                 tempPoint->setPixel(texturedImg,
                                     doubleLineInterpolation(sourceImg, tempPoint2->getX(), tempPoint2->getY()));
@@ -76,7 +76,7 @@ void TriangleTexturing::texturing(int sourceColor, QImage *texturedImg, Triangle
 }
 
 
-double TriangleTexturing::calDenominatorVW(Triangle triangle, MyPoint2D point) {
+double TriangleTexturing::calDenominatorVW(Triangle triangle, const MyPoint2D& point) {
     return (double)(((triangle.getPoint(1).getX() - triangle.getPoint(0).getX()) * (triangle.getPoint(2).getY() - triangle.getPoint(0).getY())) -
                     ((triangle.getPoint(2).getX() - triangle.getPoint(0).getX()) * (triangle.getPoint(1).getY() - triangle.getPoint(0).getY())));
 }
@@ -121,8 +121,8 @@ QColor TriangleTexturing::doubleLineInterpolation(QImage *img, double x, double 
         blue = b * ((1.0 - a) * (double)point1Color.blue() + a * (double)point2Color.blue())
                     + (1.0 - b) * ((1.0 - a) * (double)point4Color.blue() + a * (double)point3Color.blue());
 
-        return QColor(red, green, blue);
+        return {red, green, blue};
     } else {
-        return QColor(0, 0, 0);
+        return {0, 0, 0};
     }
 }

@@ -13,7 +13,7 @@ public:
 
     Triangle();
     Triangle(std::vector < MyPoint2D > points);
-    Triangle(MyPoint2D point1, MyPoint2D point2, MyPoint2D point3);
+    Triangle(const MyPoint2D& point1, const MyPoint2D& point2, const MyPoint2D& point3);
 
     ~Triangle();
 

@@ -1,20 +1,20 @@
 #include "includes/Triangle.h"
 
-Triangle::Triangle() {
-}
+#include <utility>
+
+Triangle::Triangle() = default;
 
 Triangle::Triangle(std::vector< MyPoint2D > points) {
-    this->points = points;
+    this->points = std::move(points);
 }
 
-Triangle::Triangle(MyPoint2D point1, MyPoint2D point2, MyPoint2D point3) {
+Triangle::Triangle(const MyPoint2D& point1, const MyPoint2D& point2, const MyPoint2D& point3) {
     points.push_back(point1);
     points.push_back(point2);
     points.push_back(point3);
 }
 
-Triangle::~Triangle() {
-}
+Triangle::~Triangle() = default;
 
 void Triangle::draw(QImage *img, int RGBColor) {
 
@@ -26,6 +26,7 @@ void Triangle::draw(QImage *img, int RGBColor) {
 
         tempLine.draw(img, RGBColor);
     }
+    // przeciwprostokatna
 //    tempLine.setStartPoint(points[0]);
 //    tempLine.draw(img, RGBColor);
 }

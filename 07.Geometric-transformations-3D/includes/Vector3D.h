@@ -6,15 +6,19 @@
 
 class Vector3D {
 
+public:
+
+    static double* convertToVector(MyPoint3D *point);
+
     /**
      * Fukncja tworzaca wektor zaczepiony w punkcie point1 i prowadacy do punktu point2
      */
-     static double* createVector(MyPoint3D *point1, MyPoint3D *point2);
+     static double* createVector(MyPoint3D point1, MyPoint3D point2);
 
     /**
      * Dlugosc wektora
      */
-    static double lenght(double *point);
+    static double length(double *point);
 
     /**
      * Iloczyn wektorowy
@@ -31,6 +35,10 @@ class Vector3D {
      */
     static double* normalize(double *point);
 
+    /**
+     * liczby sredni wektor normalny wierzcholka na podstawie scian, do ktorych nalezy
+     */
+    static double* avgVectorVertex(const double* wall1, const double* wall2,  const double* wall3);
 };
 
 
