@@ -13,8 +13,8 @@
 class Cube {
 
 public:
-    Cube(int a, int d);
-    Cube(int x, int y, int z, int d);
+    Cube(int a, int d, int x0, int y0, int z0);
+    Cube(int x, int y, int z, int d, int x0, int y0, int z0);
 //    Cube(std::vector <MyPoint3D > pointsTemp) : points(pointsTemp);
 
     std::vector < Triangle3D > getTriangles() { return triangles; }
@@ -32,12 +32,14 @@ private:
     int y;
     int z;
     int d;
+    int x0, y0, z0;
 
     std::vector < MyPoint3D > points;
     std::vector < Triangle3D > triangles;
 
-    std::vector < double* > normalWallVectors;
-    std::vector < double* > avgNormalVertexVectors;
+    double normalWallVectors[6][3];
+    double normalTriangleVectors[12][3];
+    double avgNormalVertexVectors[8][3];
 
     /**
      * na podstawie wspolrzednych ustala wektor punktow i wektor trojkatow
@@ -59,6 +61,8 @@ private:
      */
     void setWallVectors();
 
+    void setTriangleVectors();
+
     /**
      * ustawia srednie wektory normalne dla kazdego wierzcholka
      */
@@ -73,7 +77,7 @@ private:
      * metoda sprawdzajaca, czy dany trojkat zrzutowany na 2D jest widoczny dla obserwatora
      * @return prawda jesli widoczny, falsz w przeciwnym wypadku
      */
-    static bool isVisible(Triangle triangle);
+    bool isVisible(Triangle& triangle/*, int iWall, int iTriangle*/);
 
 
 };

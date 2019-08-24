@@ -31,7 +31,7 @@ class MyWidget : public QWidget {
     /**
      * img2 is a const image created after program launch
      */
-    QImage *img2;
+    QImage *imgConst;
 
     Cube *cube;
     Cube *cubeConst;
@@ -77,6 +77,8 @@ private:
      * updateImg draws new image after transformations
      */
     void updateImg();
+
+    void testVectors() const;
 };
 
 #endif // MYWIDGET_H

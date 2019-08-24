@@ -5,9 +5,9 @@
 MyWidget::MyWidget(std::vector < QSlider* > scalingSliders, int width, int height) {
 
     img = new QImage(width, height, QImage::Format_RGB32);
-    img2 = new QImage(width, height, QImage::Format_RGB32);
+    imgConst = new QImage(width, height, QImage::Format_RGB32);
 
-    *img2 = *img;
+    *imgConst = *img;
 
     transformationMatrix = new TransformationMatrix4x4(0, 0, 0,
                                                         0, 0, 0,
@@ -15,8 +15,8 @@ MyWidget::MyWidget(std::vector < QSlider* > scalingSliders, int width, int heigh
                                                         0.0, 0.0, 0.0, img);
     transformationMatrix->updateMatrix();
 
-    cube = new Cube(50, 250);
-    cubeConst = new Cube(50, 250);
+    cube = new Cube(50, 250, 0, 0, 0);
+    cubeConst = new Cube(50, 250, 0, 0, 0);
     cube->updateValues(transformationMatrix);
     cube->draw(img);
     repaint();
@@ -26,13 +26,13 @@ MyWidget::MyWidget(std::vector < QSlider* > scalingSliders, int width, int heigh
 
 MyWidget::~MyWidget() {
     delete img;
-    delete img2;
+    delete imgConst;
     delete transformationMatrix;
     delete cube;
     delete cubeConst;
 
     img = nullptr;
-    img2 = nullptr;
+    imgConst = nullptr;
     transformationMatrix = nullptr;
     cube = nullptr;
     cubeConst = nullptr;
@@ -123,4 +123,26 @@ void MyWidget::setZScaling(int value) {
     }
     cube->updateValues(transformationMatrix);
     updateImg();
+}
+
+void MyWidget::testVectors() const {/// test vectors
+    MyPoint3D A(2,4,2,2);
+    MyPoint3D B(3,1,2,1);
+    MyPoint3D C(4, 1, 1, 4);
+    double v1[3];
+    double v2[3];
+    double v3[3];
+    double v4[3];
+    Vector3D::createVector(A, B, v1);
+    Vector3D::createVector(A, C, v2);
+    Vector3D::crossProduct(v1, v2, v3);
+    Vector3D::normalize(v3, v4);
+
+    std::cout << "v1 = [" << v1[0] << ", " << v1[1] << ", " << v1[2] << "]" << std::endl;
+    std::cout << "v2 = [" << v2[0] << ", " << v2[1] << ", " << v2[2] << "]" << std::endl;
+    std::cout << "v1 x v2 = [" << v3[0] << ", " << v3[1] << ", " << v3[2] << "]" << std::endl;
+    std::cout << "v1 * v2 = v3 = " << Vector3D::dotProduct(v1, v3) << std::endl;
+    std::cout << "length(v3) = " << Vector3D::length(v3) << std::endl;
+    std::cout << "normalize(v3) = v4 = [" << v4[0] << ", " << v4[1] << ", " << v4[2] << "]" << std::endl;
+    std::cout << "length(v4) = " << Vector3D::length(v4) << std::endl;
 }
