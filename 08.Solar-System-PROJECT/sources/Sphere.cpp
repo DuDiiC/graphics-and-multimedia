@@ -30,7 +30,7 @@ void Sphere::draw(QImage *img, int RGBColor) {
             0x550055 // pink
     };
 
-    texturingWalls(img, true, colors);
+    //texturingWalls(img, true, colors);
 
     // rysowanie punktow na razie
     for(int i = 0; i < triangles.size(); i++) {
@@ -141,7 +141,6 @@ void Sphere::texturingWalls(QImage *img, bool uniformColor, const int *colors) {
     return;
 }
 
-// dziala zle
 bool Sphere::isVisible(Triangle3D *triangle3D) {
 
     Triangle *triangle = triangle3D->changeInto2D();

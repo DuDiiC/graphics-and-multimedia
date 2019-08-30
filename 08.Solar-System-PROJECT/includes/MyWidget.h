@@ -39,8 +39,8 @@ class MyWidget : public QWidget {
     Sphere *sphereEarth;
     Sphere *sphereEarthConst;
 
-    Sphere *sphereSun;
-    Sphere *sphereSunConst;
+    std::vector < Sphere* > planets;
+    std::vector < Sphere* > constPlanets;
 
     TransformationMatrix4x4 *transformationMatrix;
 
@@ -71,6 +71,10 @@ private:
     void updateImg();
 
     void testVectors() const;
+
+    void setPlanets();
+
+    void setConstPlanets();
 };
 
 #endif // MYWIDGET_H

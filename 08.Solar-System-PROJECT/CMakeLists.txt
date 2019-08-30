@@ -35,7 +35,7 @@ add_executable(08_Solar_System_PROJECT
         sources/TriangleTexturing.cpp
         includes/TriangleTexturing.h
         sources/Vector3D.cpp
-        includes/Vector3D.h sources/Sphere.cpp includes/Sphere.h)
+        includes/Vector3D.h sources/Sphere.cpp includes/Sphere.h sources/MilkyWay.cpp includes/MilkyWay.h)
 
 target_link_libraries(08_Solar_System_PROJECT Qt5::Core)
 target_link_libraries(08_Solar_System_PROJECT Qt5::Widgets)
