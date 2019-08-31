@@ -20,7 +20,15 @@ public:
 
     const std::vector<Triangle3D> &getTriangles() const {return triangles;}
 
-    void draw(QImage* img, int RGBColor = 0xFFFFFF);
+    int getX0() const { return x0; }
+
+    int getY0() const { return y0; }
+
+    int getZ0() const { return z0; }
+
+    int getD() const { return d; }
+
+    void draw(QImage* img, double* observer = nullptr, int RGBColor = 0xFFFFFF);
 
     void updateValues(TransformationMatrix4x4 *matrix);
 

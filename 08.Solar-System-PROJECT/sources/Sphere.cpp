@@ -16,7 +16,7 @@ Sphere::Sphere(int R, int stacksCount, int sectorsCount, int d, QImage texture, 
     setValues();
 }
 
-void Sphere::draw(QImage *img, int RGBColor) {
+void Sphere::draw(QImage *img, double* observer, int RGBColor) {
 
     //img->fill(Qt::black);
 
@@ -32,12 +32,15 @@ void Sphere::draw(QImage *img, int RGBColor) {
 
     //texturingWalls(img, true, colors);
 
-    // rysowanie punktow na razie
     for(int i = 0; i < triangles.size(); i++) {
         if(isVisible(&triangles[i])) {
             //triangles[i].changeInto2D()->draw(img, RGBColor);
-            TriangleTexturing::texturing(&texture, &texturesPoints[i], img, triangles[i].changeInto2D());
-            //TriangleTexturing::texturing(colors[i%6], img, triangles[i].changeInto2D());
+            if(observer == nullptr) {
+                TriangleTexturing::texturing(&texture, &texturesPoints[i], img, triangles[i].changeInto2D());
+                //TriangleTexturing::texturing(colors[0], img, triangles[i].changeInto2D());
+            } else {
+                TriangleTexturing::texturingWithFlatShading(&texture, &texturesPoints[i], img, &triangles[i], observer);
+            }
         }
     }
     //TriangleTexturing::texturing(&texture, &texturesPoints[0], img, triangles[0].changeInto2D());
@@ -170,4 +173,3 @@ bool Sphere::isVisible(Triangle3D *triangle3D) {
 
 
 }
-

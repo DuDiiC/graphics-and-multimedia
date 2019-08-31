@@ -21,6 +21,9 @@ public:
     static void resetTexturedTrianglePoint();
 
     static void texturing(QImage *sourceImg, Triangle *sourceTriangle, QImage *texturedImg, Triangle *texturedTriangle);
+    static void texturingWithFlatShading(QImage *sourceImg, Triangle *sourceTriangle,
+                                        QImage *texturedImg, Triangle3D *texturedTriangle,
+                                        double *observer);
     static void texturing(int sourceColor, QImage *texturedImg, Triangle *texturedTriangle);
 
 

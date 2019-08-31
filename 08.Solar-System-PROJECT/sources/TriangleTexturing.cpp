@@ -1,4 +1,5 @@
 #include "includes/TriangleTexturing.h"
+#include "includes/Vector3D.h"
 #include <iostream>
 
 int TriangleTexturing::sourceTrianglePoints = 0;
@@ -43,6 +44,60 @@ void TriangleTexturing::texturing(QImage *sourceImg, Triangle *sourceTriangle, Q
 
                 tempPoint->setPixel(texturedImg,
                                     doubleLineInterpolation(sourceImg, tempPoint2->getX(), tempPoint2->getY()));
+
+                delete tempPoint2;
+            }
+
+            delete tempPoint;
+        }
+    }
+}
+
+void TriangleTexturing::texturingWithFlatShading(QImage *sourceImg, Triangle *sourceTriangle,
+                                     QImage *texturedImg, Triangle3D *texturedTriangle3D,
+                                     double *observer) {
+    Triangle* texturedTriangle = texturedTriangle3D->changeInto2D();
+    double BC[3];
+    Vector3D::createVector(texturedTriangle3D->getPoint(1), texturedTriangle3D->getPoint(2), BC);
+    double BA[3];
+    Vector3D::createVector(texturedTriangle3D->getPoint(1), texturedTriangle3D->getPoint(0), BA);
+    double wallVector[3];
+    Vector3D::crossProduct(BC, BA, wallVector);
+    Vector3D::normalize(wallVector, wallVector);
+
+    double val = Vector3D::dotProduct(wallVector, observer);
+    if(val > 0.0) val = 0.0;
+    else if(val < 0.0) val = -val;
+
+//    std::cout << val << std::endl;
+
+    double u, v, w;
+
+    for (int x = texturedTriangle->minimumX(); x <= texturedTriangle->maximumX(); x++) {
+        for (int y = texturedTriangle->minimumY(); y < texturedTriangle->maximumY(); y++) {
+
+            auto *tempPoint = new MyPoint2D(x, y);
+            v = calNumeratorV(*texturedTriangle, *tempPoint) / calDenominatorVW(*texturedTriangle, *tempPoint);
+            w = calNumeratorW(*texturedTriangle, *tempPoint) / calDenominatorVW(*texturedTriangle, *tempPoint);
+            u = calU(v, w);
+
+            if (pointIsInTriangle(u, v, w)) {
+                double xt = u * (double) sourceTriangle->getPoint(0).getX() +
+                            v * (double) sourceTriangle->getPoint(1).getX() +
+                            w * (double) sourceTriangle->getPoint(2).getX();
+                double yt = u * (double) sourceTriangle->getPoint(0).getY() +
+                            v * (double) sourceTriangle->getPoint(1).getY() +
+                            w * (double) sourceTriangle->getPoint(2).getY();
+
+                auto *tempPoint2 = new MyPoint2D(xt, yt);
+
+                QColor colorTemp = doubleLineInterpolation(sourceImg, tempPoint2->getX(), tempPoint2->getY());
+                colorTemp.setRed(colorTemp.red() * val);
+                colorTemp.setGreen(colorTemp.green() * val);
+                colorTemp.setBlue(colorTemp.blue() * val);
+
+                tempPoint->setPixel(texturedImg,
+                                    colorTemp);
 
                 delete tempPoint2;
             }

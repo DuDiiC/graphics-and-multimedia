@@ -10,7 +10,7 @@
 
 #include "MyPoint2D.h"
 
-#include <cstdlib>
+#include <random>
 
 
 class MilkyWay {
