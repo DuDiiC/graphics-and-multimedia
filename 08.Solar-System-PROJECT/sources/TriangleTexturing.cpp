@@ -71,7 +71,7 @@ void TriangleTexturing::texturingWithFlatShading(QImage *sourceImg, Triangle *so
     if(val < 0.0) val = 0;
     val += 0.111;
 
-    std::cout << val << std::endl;
+//    std::cout << val << std::endl;
 
     double u, v, w;
 

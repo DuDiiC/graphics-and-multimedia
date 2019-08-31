@@ -74,6 +74,12 @@ void Sphere::updateValues(TransformationMatrix4x4 *matrix) {
         point = newPoint;
     }
     setTriangles();
+
+    double center[] = {static_cast<double>(x0),  static_cast<double>(y0),  static_cast<double>(z0), 1.0};
+    QGenericMatrix<1, 4, double> centerM(center);
+
+    centerM = *(matrix->getTransformationMatrix()) * centerM;
+    x0 = centerM.data()[0]; y0 = centerM.data()[1]; z0 = centerM.data()[2];
 }
 
 void Sphere::setValues() {

@@ -16,7 +16,7 @@ int main(int argc, char **argv ) {
 
     // main app widget
     QWidget *widget = new QWidget();
-    widget->setMinimumWidth(1200);
+    widget->setMinimumWidth(1500);
     widget->setMinimumHeight(850);
 
     // ---ROTATION---
@@ -56,7 +56,7 @@ int main(int argc, char **argv ) {
     rotationLayout->addLayout(rotationZLayout);
 
     // --- MY WIDGET --
-    MyWidget *myWidget = new MyWidget(1000, 800);
+    MyWidget *myWidget = new MyWidget(1400, 800);
 
     // --- SET ALL IN LAYOUT ---
     QVBoxLayout *guiLayout = new QVBoxLayout();

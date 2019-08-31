@@ -7,7 +7,7 @@ MyPoint2D* MyPoint3D::changeInto2D() {
     xPrim = (double)(x*d)/(double)(z+d);
     yPrim = (double)(y*d)/(double)(z+d);
 
-    return new MyPoint2D(xPrim+500, yPrim+400);
+    return new MyPoint2D(xPrim+700, yPrim+400);
 }
 
 bool operator==(const MyPoint3D& p1, const MyPoint3D& p2) {

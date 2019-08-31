@@ -22,10 +22,10 @@ MyWidget::MyWidget(int width, int height) {
 
     *imgConst = *img;
 
-    transformationMatrix = new TransformationMatrix4x4(80, -80, 259,
+    transformationMatrix = new TransformationMatrix4x4(0, 0, 0,
                                                         0, 0, 0,
                                                         1.0, 1.0, 1.0,
-                                                        M_PI/2, 0.0, 0.0, img);
+                                                        0.0, 0.0, 0.0, img);
     transformationMatrix->updateMatrix();
 
     setPlanets();
@@ -73,43 +73,43 @@ void MyWidget::updateImg() {
 
 void MyWidget::setPlanets() {
 
-    planets.push_back(new Sphere(80, 25, 25, 250, QImage(SUN_TEXTURE.c_str())));
-    planets.push_back(new Sphere(10, 15, 15, 250, QImage(MERCURY_TEXTURE.c_str()), 50, 50));
-    planets.push_back(new Sphere(13, 15, 15, 250, QImage(VENUS_TEXTURE.c_str()), 80, -80));
-    planets.push_back(new Sphere(25, 15, 15, 250, QImage(EARTH_TEXTURE.c_str()), -135, -135));
-    planets.push_back(new Sphere(20, 15, 15, 250, QImage(MARS_TEXTURE.c_str()), 175, 175));
-    planets.push_back(new Sphere(45, 20, 20, 250, QImage(JUPITER_TEXTURE.c_str()), 215, 215));
-    planets.push_back(new Sphere(42, 20, 20, 250, QImage(SATURN_TEXTURE.c_str()), -250, 250));
-    planets.push_back(new Sphere(33, 15, 15, 250, QImage(URANUS_TEXTURE.c_str()), -280, -280));
-    planets.push_back(new Sphere(30, 15, 15, 250, QImage(NEPTUNE_TEXTURE.c_str()), 320, -320));
+    planets.push_back(new Sphere(80, 25, 25, 1000, QImage(SUN_TEXTURE.c_str())));
+    planets.push_back(new Sphere(10, 15, 15, 1000, QImage(MERCURY_TEXTURE.c_str()), 90, 12));
+    planets.push_back(new Sphere(13, 15, 15, 1000, QImage(VENUS_TEXTURE.c_str()), 120, 15));
+    planets.push_back(new Sphere(25, 25, 25, 1000, QImage(EARTH_TEXTURE.c_str()), 175, -12));
+    planets.push_back(new Sphere(22, 15, 15, 1000, QImage(MARS_TEXTURE.c_str()), 240, 13));
+    planets.push_back(new Sphere(45, 20, 20, 1000, QImage(JUPITER_TEXTURE.c_str()), 320, -14));
+    planets.push_back(new Sphere(42, 20, 20, 1000, QImage(SATURN_TEXTURE.c_str()), 440, 11));
+    planets.push_back(new Sphere(33, 15, 15, 1000, QImage(URANUS_TEXTURE.c_str()), 535, -12));
+    planets.push_back(new Sphere(30, 15, 15, 1000, QImage(NEPTUNE_TEXTURE.c_str()), 630, 15));
 }
 
 void MyWidget::setConstPlanets() {
-    constPlanets.push_back(new Sphere(80, 25, 25, 250, QImage(SUN_TEXTURE.c_str())));
-    constPlanets.push_back(new Sphere(10, 15, 15, 250, QImage(MERCURY_TEXTURE.c_str()), 50, 50));
-    constPlanets.push_back(new Sphere(13, 15, 15, 250, QImage(VENUS_TEXTURE.c_str()), 80, -80));
-    constPlanets.push_back(new Sphere(25, 15, 15, 250, QImage(EARTH_TEXTURE.c_str()), -135, -135));
-    constPlanets.push_back(new Sphere(20, 15, 15, 250, QImage(MARS_TEXTURE.c_str()), 175, 175));
-    constPlanets.push_back(new Sphere(45, 20, 20, 250, QImage(JUPITER_TEXTURE.c_str()), 215, 215));
-    constPlanets.push_back(new Sphere(42, 20, 20, 250, QImage(SATURN_TEXTURE.c_str()), -250, 250));
-    constPlanets.push_back(new Sphere(33, 15, 15, 250, QImage(URANUS_TEXTURE.c_str()), -280, -280));
-    constPlanets.push_back(new Sphere(30, 15, 15, 250, QImage(NEPTUNE_TEXTURE.c_str()), 320, -320));
+    constPlanets.push_back(new Sphere(80, 25, 25, 1000, QImage(SUN_TEXTURE.c_str())));
+    constPlanets.push_back(new Sphere(10, 15, 15, 1000, QImage(MERCURY_TEXTURE.c_str()), 90, 12));
+    constPlanets.push_back(new Sphere(13, 15, 15, 1000, QImage(VENUS_TEXTURE.c_str()), 120, 15));
+    constPlanets.push_back(new Sphere(25, 25, 25, 1000, QImage(EARTH_TEXTURE.c_str()), 175, -12));
+    constPlanets.push_back(new Sphere(22, 15, 15, 1000, QImage(MARS_TEXTURE.c_str()), 240, 13));
+    constPlanets.push_back(new Sphere(45, 20, 20, 1000, QImage(JUPITER_TEXTURE.c_str()), 320, -14));
+    constPlanets.push_back(new Sphere(42, 20, 20, 1000, QImage(SATURN_TEXTURE.c_str()), 440, 11));
+    constPlanets.push_back(new Sphere(33, 15, 15, 1000, QImage(URANUS_TEXTURE.c_str()), 535, -12));
+    constPlanets.push_back(new Sphere(30, 15, 15, 1000, QImage(NEPTUNE_TEXTURE.c_str()), 630, 15));
 }
 
 void MyWidget::setXRotation(int value) {
     transformationMatrix->setAlphaXFromDegrees(value);
-    planets[3]->updateValues(transformationMatrix);
+    planets[6]->updateValues(transformationMatrix);
     updateImg();
 }
 
 void MyWidget::setYRotation(int value) {
     transformationMatrix->setAlphaYFromDegrees(value);
-    planets[3]->updateValues(transformationMatrix);
+    planets[6]->updateValues(transformationMatrix);
     updateImg();
 }
 
 void MyWidget::setZRotation(int value) {
     transformationMatrix->setAlphaZFromDegrees(value);
-    planets[3]->updateValues(transformationMatrix);
+    planets[6]->updateValues(transformationMatrix);
     updateImg();
 }
