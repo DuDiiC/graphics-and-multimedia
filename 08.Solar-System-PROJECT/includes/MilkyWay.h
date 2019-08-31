@@ -1,7 +1,3 @@
-//
-// Created by maciejdudek on 30.08.2019.
-//
-
 #ifndef MILKYWAY_H
 #define MILKYWAY_H
 

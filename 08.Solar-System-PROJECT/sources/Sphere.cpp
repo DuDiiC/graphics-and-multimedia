@@ -1,7 +1,10 @@
 #include "includes/Sphere.h"
 
+#include <iostream>
+
 #include <utility>
 #include <includes/TriangleTexturing.h>
+#include <includes/Vector3D.h>
 
 Sphere::Sphere(int R, int stacksCount, int sectorsCount, int d, QImage texture, int x0, int y0, int z0) {
     this->R = R;
@@ -32,6 +35,16 @@ void Sphere::draw(QImage *img, double* observer, int RGBColor) {
 
     //texturingWalls(img, true, colors);
 
+    double lightVector[3];
+    double sphereCenter[3] {
+        static_cast<double>(x0), static_cast<double>(y0), static_cast<double>(z0)
+    };
+    Vector3D::normalize(sphereCenter, sphereCenter);
+    if(observer != nullptr) {
+        Vector3D::createVector(observer, sphereCenter, lightVector);
+        Vector3D::normalize(lightVector, lightVector);
+        std::cout << lightVector[0] << " " << lightVector[1] << " " << lightVector[2] << std::endl;
+    }
     for(int i = 0; i < triangles.size(); i++) {
         if(isVisible(&triangles[i])) {
             //triangles[i].changeInto2D()->draw(img, RGBColor);
@@ -39,7 +52,7 @@ void Sphere::draw(QImage *img, double* observer, int RGBColor) {
                 TriangleTexturing::texturing(&texture, &texturesPoints[i], img, triangles[i].changeInto2D());
                 //TriangleTexturing::texturing(colors[0], img, triangles[i].changeInto2D());
             } else {
-                TriangleTexturing::texturingWithFlatShading(&texture, &texturesPoints[i], img, &triangles[i], observer);
+                TriangleTexturing::texturingWithFlatShading(&texture, &texturesPoints[i], img, &triangles[i], sphereCenter);
             }
         }
     }

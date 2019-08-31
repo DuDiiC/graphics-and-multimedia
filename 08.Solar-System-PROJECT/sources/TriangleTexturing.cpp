@@ -55,7 +55,7 @@ void TriangleTexturing::texturing(QImage *sourceImg, Triangle *sourceTriangle, Q
 
 void TriangleTexturing::texturingWithFlatShading(QImage *sourceImg, Triangle *sourceTriangle,
                                      QImage *texturedImg, Triangle3D *texturedTriangle3D,
-                                     double *observer) {
+                                     double *lightVector) {
     Triangle* texturedTriangle = texturedTriangle3D->changeInto2D();
     double BC[3];
     Vector3D::createVector(texturedTriangle3D->getPoint(1), texturedTriangle3D->getPoint(2), BC);
@@ -65,11 +65,13 @@ void TriangleTexturing::texturingWithFlatShading(QImage *sourceImg, Triangle *so
     Vector3D::crossProduct(BC, BA, wallVector);
     Vector3D::normalize(wallVector, wallVector);
 
-    double val = Vector3D::dotProduct(wallVector, observer);
-    if(val > 0.0) val = 0.0;
-    else if(val < 0.0) val = -val;
+    double val = Vector3D::dotProduct(wallVector, lightVector);
+//    if(val > 0.0) val = 0.0;
+//    else if(val < 0.0) val = -val;
+    if(val < 0.0) val = 0;
+    val += 0.111;
 
-//    std::cout << val << std::endl;
+    std::cout << val << std::endl;
 
     double u, v, w;
 

@@ -33,15 +33,8 @@ class MyWidget : public QWidget {
      */
     QImage *imgConst;
 
-//    Cube *cube;
-//    Cube *cubeConst;
-
-//    Sphere *sphereEarth;
-//    Sphere *sphereEarthConst;
-
     double observer[3];
 
-    Sphere *sphereSun;
     std::vector < Sphere* > planets;
     std::vector < Sphere* > constPlanets;
 

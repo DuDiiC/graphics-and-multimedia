@@ -23,7 +23,7 @@ public:
     static void texturing(QImage *sourceImg, Triangle *sourceTriangle, QImage *texturedImg, Triangle *texturedTriangle);
     static void texturingWithFlatShading(QImage *sourceImg, Triangle *sourceTriangle,
                                         QImage *texturedImg, Triangle3D *texturedTriangle,
-                                        double *observer);
+                                        double *lightVector);
     static void texturing(int sourceColor, QImage *texturedImg, Triangle *texturedTriangle);
 
 
