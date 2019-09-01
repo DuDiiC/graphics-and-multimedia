@@ -80,6 +80,10 @@ private:
      */
     void updateImg();
 
+    inline static bool sortingPlanets(const std::pair < int, int > &a, const std::pair < int, int > &b) {
+        return (a.second < b.second);
+    }
+
     void setPlanets();
 
     void setConstPlanets();
