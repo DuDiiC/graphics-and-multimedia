@@ -6,10 +6,12 @@
 #include "MyPoint3D.h"
 #include "Triangle3D.h"
 #include "Triangle.h"
-#include "TransformationMatrix4x4.h"
+#include "includes/Matrices/TransformationMatrix4x4.h"
+#include "includes/Matrices/SunTransformationMatrix.h"
 
 #include <vector>
 #include <cmath>
+#include <includes/Matrices/PlanetTransformationMatrix.h>
 
 class Sphere {
 
@@ -31,6 +33,8 @@ public:
     void draw(QImage* img, double* observer = nullptr, int RGBColor = 0xFFFFFF);
 
     void updateValues(TransformationMatrix4x4 *matrix);
+    void updateValues(PlanetTransformationMatrix *matrix);
+    void updateValues(SunTransformationMatrix *matrix);
 
 private:
 

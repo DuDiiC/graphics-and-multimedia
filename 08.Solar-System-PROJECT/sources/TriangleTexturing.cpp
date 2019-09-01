@@ -66,12 +66,9 @@ void TriangleTexturing::texturingWithFlatShading(QImage *sourceImg, Triangle *so
     Vector3D::normalize(wallVector, wallVector);
 
     double val = Vector3D::dotProduct(wallVector, lightVector);
-//    if(val > 0.0) val = 0.0;
-//    else if(val < 0.0) val = -val;
     if(val < 0.0) val = 0;
     val += 0.111;
-
-//    std::cout << val << std::endl;
+    if(val > 1.0) val = 1.0;
 
     double u, v, w;
 
@@ -98,8 +95,7 @@ void TriangleTexturing::texturingWithFlatShading(QImage *sourceImg, Triangle *so
                 colorTemp.setGreen(colorTemp.green() * val);
                 colorTemp.setBlue(colorTemp.blue() * val);
 
-                tempPoint->setPixel(texturedImg,
-                                    colorTemp);
+                tempPoint->setPixel(texturedImg, colorTemp);
 
                 delete tempPoint2;
             }

@@ -5,6 +5,8 @@
 #include <utility>
 #include <includes/TriangleTexturing.h>
 #include <includes/Vector3D.h>
+#include <includes/Matrices/SunTransformationMatrix.h>
+#include <includes/Matrices/PlanetTransformationMatrix.h>
 
 Sphere::Sphere(int R, int stacksCount, int sectorsCount, int d, QImage texture, int x0, int y0, int z0) {
     this->R = R;
@@ -43,11 +45,11 @@ void Sphere::draw(QImage *img, double* observer, int RGBColor) {
     if(observer != nullptr) {
         Vector3D::createVector(observer, sphereCenter, lightVector);
         Vector3D::normalize(lightVector, lightVector);
-        std::cout << lightVector[0] << " " << lightVector[1] << " " << lightVector[2] << std::endl;
+//        std::cout << lightVector[0] << " " << lightVector[1] << " " << lightVector[2] << std::endl;
     }
     for(int i = 0; i < triangles.size(); i++) {
         if(isVisible(&triangles[i])) {
-            //triangles[i].changeInto2D()->draw(img, RGBColor);
+//            triangles[i].changeInto2D()->draw(img, RGBColor);
             if(observer == nullptr) {
                 TriangleTexturing::texturing(&texture, &texturesPoints[i], img, triangles[i].changeInto2D());
                 //TriangleTexturing::texturing(colors[0], img, triangles[i].changeInto2D());
@@ -56,7 +58,6 @@ void Sphere::draw(QImage *img, double* observer, int RGBColor) {
             }
         }
     }
-    //TriangleTexturing::texturing(&texture, &texturesPoints[0], img, triangles[0].changeInto2D());
 }
 
 void Sphere::updateValues(TransformationMatrix4x4 *matrix) {
@@ -80,6 +81,46 @@ void Sphere::updateValues(TransformationMatrix4x4 *matrix) {
 
     centerM = *(matrix->getTransformationMatrix()) * centerM;
     x0 = centerM.data()[0]; y0 = centerM.data()[1]; z0 = centerM.data()[2];
+}
+
+void Sphere::updateValues(PlanetTransformationMatrix *matrix) {
+    for(auto & point : points) {
+        MyPoint3D newPoint;
+
+        double tempPointTab[] = { (double)point.getX(), (double)point.getY(), (double)point.getZ(), 1.0 };
+        QGenericMatrix<1, 4, double> tempPointM(tempPointTab);
+
+        tempPointM = *(matrix->getPlanetTransformationMatrix()) * tempPointM;
+
+        newPoint.setXYZ(tempPointM.data()[0], tempPointM.data()[1], tempPointM.data()[2]);
+        newPoint.setD(d);
+
+        point = newPoint;
+    }
+    setTriangles();
+
+    double center[] = {static_cast<double>(x0),  static_cast<double>(y0),  static_cast<double>(z0), 1.0};
+    QGenericMatrix<1, 4, double> centerM(center);
+
+    centerM = *(matrix->getPlanetTransformationMatrix()) * centerM;
+    x0 = centerM.data()[0]; y0 = centerM.data()[1]; z0 = centerM.data()[2];
+}
+
+void Sphere::updateValues(SunTransformationMatrix *matrix) {
+    for(auto & point : points) {
+        MyPoint3D newPoint;
+
+        double tempPointTab[] = { (double)point.getX(), (double)point.getY(), (double)point.getZ(), 1.0 };
+        QGenericMatrix<1, 4, double> tempPointM(tempPointTab);
+
+        tempPointM = *(matrix->getSunTransformationMatrix()) * tempPointM;
+
+        newPoint.setXYZ(tempPointM.data()[0], tempPointM.data()[1], tempPointM.data()[2]);
+        newPoint.setD(d);
+
+        point = newPoint;
+    }
+    setTriangles();
 }
 
 void Sphere::setValues() {
