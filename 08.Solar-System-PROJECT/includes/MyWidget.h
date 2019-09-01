@@ -51,6 +51,8 @@ public:
 
 public slots:
 
+    void animation();
+
     void setSunRotationX(int value);
     void setSunRotationY(int value);
     void setSunRotationZ(int value);
@@ -62,10 +64,6 @@ public slots:
     void setSaturnRotation(int value);
     void setUranusRotation(int value);
     void setNeptuneRotation(int value);
-
-    void setXRotation(int value);
-    void setYRotation(int value);
-    void setZRotation(int value);
 
 protected:
 
@@ -86,7 +84,11 @@ private:
 
     void setConstPlanets();
 
+    void updatePlanets(std::vector < Sphere* > planetsTemp);
+
     void setMatrices();
+
+    void updateMatrices();
 };
 
 #endif // MYWIDGET_H

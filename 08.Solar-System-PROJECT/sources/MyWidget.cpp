@@ -2,7 +2,9 @@
 
 #include <includes/MilkyWay.h>
 #include <includes/Vector3D.h>
-#include <includes/MyWidget.h>
+#include <QtCore/QTime>
+#include <QtCore/QEventLoop>
+#include <QCoreApplication>
 
 const std::string SUN_TEXTURE = "/home/maciejdudek/Pulpit/Fourth-Semester-Graphics/08.Solar-System-PROJECT/resources/sun.jpg";
 const std::string MERCURY_TEXTURE = "/home/maciejdudek/Pulpit/Fourth-Semester-Graphics/08.Solar-System-PROJECT/resources/mercury.jpg";
@@ -39,7 +41,8 @@ MyWidget::MyWidget(int width, int height) {
         *planets[i] = *constPlanets[i];
     }
 
-    updateImg();
+    repaint();
+    //updateImg();
 }
 
 MyWidget::~MyWidget() {
@@ -61,8 +64,9 @@ void MyWidget::paintEvent(QPaintEvent *) {
 
 void MyWidget::updateImg() {
 
+    /// TODO: ZMIENIC KOLEJNOSC RYSOWANIA
+
     *img = *imgConst;
-    //MilkyWay::draw(img, 1000);
     planets[0]->draw(img);
     *planets[0] = *constPlanets[0];
     for(int i = 1; i < planets.size(); i++) {
@@ -83,10 +87,8 @@ void MyWidget::setPlanets() {
     planets.push_back(new Sphere(42, 20, 20, 1000, QImage(SATURN_TEXTURE.c_str()), 440, 11));
     planets.push_back(new Sphere(33, 15, 15, 1000, QImage(URANUS_TEXTURE.c_str()), 535, -12));
     planets.push_back(new Sphere(30, 15, 15, 1000, QImage(NEPTUNE_TEXTURE.c_str()), 630, 15));
-    planets[0]->updateValues(sunMatrix);
-    for(int i = 1; i < planets.size(); i++) {
-        planets[i]->updateValues(planetsMatrices[i-1]);
-    }
+
+    updatePlanets(planets);
 }
 
 void MyWidget::setConstPlanets() {
@@ -99,15 +101,19 @@ void MyWidget::setConstPlanets() {
     constPlanets.push_back(new Sphere(42, 20, 20, 1000, QImage(SATURN_TEXTURE.c_str()), 440, 11));
     constPlanets.push_back(new Sphere(33, 15, 15, 1000, QImage(URANUS_TEXTURE.c_str()), 535, -12));
     constPlanets.push_back(new Sphere(30, 15, 15, 1000, QImage(NEPTUNE_TEXTURE.c_str()), 630, 15));
-    constPlanets[0]->updateValues(sunMatrix);
-    for(int i = 1; i < planets.size(); i++) {
-        constPlanets[i]->updateValues(planetsMatrices[i-1]);
+
+    updatePlanets(constPlanets);
+}
+
+void MyWidget::updatePlanets(std::vector < Sphere* > planetsTemp) {
+    planetsTemp[0]->updateValues(sunMatrix);
+    for(int i = 1; i < planetsTemp.size(); i++) {
+        planetsTemp[i]->updateValues(planetsMatrices[i - 1]);
     }
 }
 
 void MyWidget::setMatrices() {
     sunMatrix = new SunTransformationMatrix(M_PI/2, M_PI/4, 0.0);
-    sunMatrix->updateMatrix();
 
     planetsMatrices.push_back(new PlanetTransformationMatrix(90, 12, 0, M_PI/2, 0.0, 0.0, 0.0));
     planetsMatrices.push_back(new PlanetTransformationMatrix(120, 15, 0, M_PI/2, 0.0, 0.0, 0.0));
@@ -117,50 +123,56 @@ void MyWidget::setMatrices() {
     planetsMatrices.push_back(new PlanetTransformationMatrix(440, 11, 0, M_PI/2, 0.0, 0.0, 0.0));
     planetsMatrices.push_back(new PlanetTransformationMatrix(535, -12, 0, M_PI/2, 0.0, 0.0, 0.0));
     planetsMatrices.push_back(new PlanetTransformationMatrix(630, 15, 0, M_PI/2, 0.0, 0.0, 0.0));
+
+    updateMatrices();
+}
+
+void MyWidget::updateMatrices() {
+    sunMatrix->updateMatrix();
     for(auto & planetMatrix : planetsMatrices) {
         planetMatrix->updateMatrix();
     }
 }
 
-void MyWidget::setXRotation(int value) {
-    transformationMatrix->setAlphaXFromDegrees(value);
-    planets[6]->updateValues(transformationMatrix);
-    updateImg();
-}
+void MyWidget::animation() {
 
-void MyWidget::setYRotation(int value) {
-    transformationMatrix->setAlphaYFromDegrees(value);
-    planets[6]->updateValues(transformationMatrix);
-    updateImg();
-}
+    int sunRotY = 0;
 
-void MyWidget::setZRotation(int value) {
-    transformationMatrix->setAlphaZFromDegrees(value);
-    planets[6]->updateValues(transformationMatrix);
-    updateImg();
+    while(sunRotY < 180) {
+        QTime pause = QTime::currentTime().addMSecs(10);
+        while(QTime::currentTime() < pause) {
+            QCoreApplication::processEvents(QEventLoop::AllEvents, 10);
+        }
+        sunRotY++;
+        setSunRotationY(sunRotY);
+    }
 }
 
 void MyWidget::setSunRotationX(int value) {
     sunMatrix->setAlphaXFromDegrees(value);
     planets[0]->updateValues(sunMatrix);
+//    constPlanets[0]->updateValues(sunMatrix);
     updateImg();
 }
 
 void MyWidget::setSunRotationY(int value) {
     sunMatrix->setAlphaYFromDegrees(value);
     planets[0]->updateValues(sunMatrix);
+//    constPlanets[0]->updateValues(sunMatrix);
     updateImg();
 }
 
 void MyWidget::setSunRotationZ(int value) {
     sunMatrix->setAlphaZFromDegrees(value);
     planets[0]->updateValues(sunMatrix);
+//    constPlanets[0]->updateValues(sunMatrix);
     updateImg();
 }
 
 void MyWidget::setMercuryRotation(int value) {
     planetsMatrices[0]->setAlphaOFromDegrees(value);
     planets[1]->updateValues(planetsMatrices[0]);
+//    constPlanets[1]->updateValues(planetsMatrices[0]);
     updateImg();
 }
 

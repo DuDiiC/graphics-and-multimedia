@@ -7,6 +7,7 @@
 #include <QSlider>
 #include <QCheckBox>
 #include <QLabel>
+#include <QtWidgets/QPushButton>
 
 #include "includes/MyWidget.h"
 
@@ -18,6 +19,9 @@ int main(int argc, char **argv ) {
     auto *widget = new QWidget();
     widget->setMinimumWidth(1650);
     widget->setMinimumHeight(850);
+
+    /// ---ANIMATION BUTTON---
+    auto *animationButton = new QPushButton("ANIMATION");
 
     /// ---SUN ROTATION---
     auto *sunRotationLabel = new QLabel("SUN ROTATION");
@@ -142,51 +146,15 @@ int main(int argc, char **argv ) {
     planetsRotationLayout->addLayout(uranusRotationLayout);
     planetsRotationLayout->addLayout(neptuneRotationLayout);
 
-    // ---ROTATION---
-//    auto *rotationLabel = new QLabel("ROTATION");
-//
-//    auto *rotationXLabel = new QLabel("x");
-//    auto *rotationXSlider = new QSlider(Qt::Horizontal);
-//    rotationXSlider->setRange(-180, 180);
-//    rotationXSlider->setValue(90);
-//
-//    auto *rotationXLayout = new QHBoxLayout();
-//    rotationXLayout->addWidget(rotationXLabel);
-//    rotationXLayout->addWidget(rotationXSlider);
-//
-//    auto rotationYLabel = new QLabel("y");
-//    auto *rotationYSlider = new QSlider(Qt::Horizontal);
-//    rotationYSlider->setRange(-180, 180);
-//    rotationYSlider->setValue(0);
-//
-//    auto *rotationYLayout = new QHBoxLayout();
-//    rotationYLayout->addWidget(rotationYLabel);
-//    rotationYLayout->addWidget(rotationYSlider);
-//
-//    auto *rotationZLabel = new QLabel("z");
-//    auto *rotationZSlider = new QSlider(Qt::Horizontal);
-//    rotationZSlider->setRange(-180, 180);
-//    rotationZSlider->setValue(0);
-//
-//    auto *rotationZLayout = new QHBoxLayout();
-//    rotationZLayout->addWidget(rotationZLabel);
-//    rotationZLayout->addWidget(rotationZSlider);
-//
-//    auto *rotationLayout = new QVBoxLayout();
-//    rotationLayout->addWidget(rotationLabel);
-//    rotationLayout->addLayout(rotationXLayout);
-//    rotationLayout->addLayout(rotationYLayout);
-//    rotationLayout->addLayout(rotationZLayout);
-
     // --- MY WIDGET --
     auto *myWidget = new MyWidget(1400, 800);
 
     // --- SET ALL IN LAYOUT ---
     auto *guiLayout = new QVBoxLayout();
 
+    guiLayout->addWidget(animationButton);
     guiLayout->addLayout(sunRotationLayout);
     guiLayout->addLayout(planetsRotationLayout);
-//    guiLayout->addLayout(rotationLayout);
 
     auto *mainLayout = new QHBoxLayout();
     mainLayout->addWidget(myWidget, 1);
@@ -197,9 +165,8 @@ int main(int argc, char **argv ) {
     widget->show();
 
     // --- CONNECTING SIGNALS AND SLOTS --
-//    QApplication::connect(rotationXSlider, SIGNAL(valueChanged(int)), myWidget, SLOT(setXRotation(int)));
-//    QApplication::connect(rotationYSlider, SIGNAL(valueChanged(int)), myWidget, SLOT(setYRotation(int)));
-//    QApplication::connect(rotationZSlider, SIGNAL(valueChanged(int)), myWidget, SLOT(setZRotation(int)));
+    QApplication::connect(animationButton, SIGNAL(released(void)), myWidget, SLOT(animation(void)));
+
     QApplication::connect(sunRotationXSlider, SIGNAL(valueChanged(int)), myWidget, SLOT(setSunRotationX(int)));
     QApplication::connect(sunRotationYSlider, SIGNAL(valueChanged(int)), myWidget, SLOT(setSunRotationY(int)));
     QApplication::connect(sunRotationZSlider, SIGNAL(valueChanged(int)), myWidget, SLOT(setSunRotationZ(int)));
