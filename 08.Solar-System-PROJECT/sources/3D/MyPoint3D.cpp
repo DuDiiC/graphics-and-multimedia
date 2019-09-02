@@ -1,9 +1,10 @@
-#include "includes/MyPoint3D.h"
+#include "includes/3D/MyPoint3D.h"
 
 MyPoint2D* MyPoint3D::changeInto2D() {
 
     int xPrim, yPrim;
 
+    // conversion from 3D into 2D
     xPrim = (double)(x*d)/(double)(z+d);
     yPrim = (double)(y*d)/(double)(z+d);
 

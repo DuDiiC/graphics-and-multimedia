@@ -18,26 +18,26 @@ find_package(Qt5Widgets REQUIRED)
 
 add_executable(08_Solar_System_PROJECT
         main.cpp
-        sources/LineSegment.cpp
-        includes/LineSegment.h
-        sources/MyPoint2D.cpp
-        includes/MyPoint2D.h
-        sources/MyPoint3D.cpp
-        includes/MyPoint3D.h
+        sources/2D/LineSegment.cpp
+        includes/2D/LineSegment.h
+        sources/2D/MyPoint2D.cpp
+        includes/2D/MyPoint2D.h
+        sources/3D/MyPoint3D.cpp
+        includes/3D/MyPoint3D.h
         sources/MyWidget.cpp
         includes/MyWidget.h
         sources/Matrices/TransformationMatrix4x4.cpp
         includes/Matrices/TransformationMatrix4x4.h
-        sources/Triangle.cpp
-        includes/Triangle.h
-        sources/Triangle3D.cpp
-        includes/Triangle3D.h
+        sources/2D/Triangle.cpp
+        includes/2D/Triangle.h
+        sources/3D/Triangle3D.cpp
+        includes/3D/Triangle3D.h
         sources/TriangleTexturing.cpp
         includes/TriangleTexturing.h
-        sources/Vector3D.cpp
-        includes/Vector3D.h
-        sources/Sphere.cpp
-        includes/Sphere.h
+        sources/3D/Vector3D.cpp
+        includes/3D/Vector3D.h
+        sources/3D/Sphere.cpp
+        includes/3D/Sphere.h
         sources/MilkyWay.cpp
         includes/MilkyWay.h
         sources/Matrices/SunTransformationMatrix.cpp

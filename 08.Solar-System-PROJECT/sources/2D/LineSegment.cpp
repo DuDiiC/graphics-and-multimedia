@@ -1,4 +1,4 @@
-#include "includes/LineSegment.h"
+#include "includes/2D/LineSegment.h"
 
 void LineSegment::draw(QImage *image, int RGBColor) {
     MyPoint2D tempPoint;

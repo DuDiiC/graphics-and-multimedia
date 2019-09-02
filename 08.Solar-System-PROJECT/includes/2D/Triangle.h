@@ -4,6 +4,7 @@
 #include <QImage>
 
 #include <vector>
+#include <utility>
 
 #include "MyPoint2D.h"
 #include "LineSegment.h"
@@ -35,6 +36,10 @@ public:
                      points.end());
     }
 
+    /**
+     * sprawdza czy punkt jest w zbiorze punktow, albo w podanej okolicy
+     * jesli tak, zwraca pozycje punktu, jesli nie zwraca -1
+     */
     int pointInSet(MyPoint2D point, int scale);
 
     int minimumX();

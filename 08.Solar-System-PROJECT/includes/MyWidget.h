@@ -4,22 +4,25 @@
 #include <QWidget>
 #include <QImage>
 #include <QPainter>
-#include <QSlider>
+//#include <QSlider>
 #include <QColor>
 #include <QGenericMatrix>
+#include <QTime>
+#include <QEventLoop>
+#include <QCoreApplication>
 
 #include <cmath>
 #include <vector>
-// FOR TESTS
-#include <iostream>
-#include <includes/Matrices/PlanetTransformationMatrix.h>
 
-#include "MyPoint2D.h"
-#include "Triangle.h"
+#include "includes/2D/MyPoint2D.h"
+#include "includes/2D/Triangle.h"
+#include "includes/3D/Vector3D.h"
 #include "TriangleTexturing.h"
+#include "includes/3D/Sphere.h"
+#include <includes/Matrices/PlanetTransformationMatrix.h>
 #include "includes/Matrices/TransformationMatrix4x4.h"
-#include "Sphere.h"
 #include "includes/Matrices/SunTransformationMatrix.h"
+#include "MilkyWay.h"
 
 class MyWidget : public QWidget {
 
@@ -51,8 +54,15 @@ public:
 
 public slots:
 
+    /**
+     * start animation
+     */
     void animation();
 
+    /**
+     *
+     * those slots set rotation parameters for each planet's matrix
+     */
     void setSunRotationX(int value);
     void setSunRotationY(int value);
     void setSunRotationZ(int value);
@@ -84,14 +94,30 @@ private:
         return (a.second < b.second);
     }
 
+    /**
+     * ustawia wartosci poczatkowe dla obiektow odpowiadajacych planetom
+     */
     void setPlanets();
 
+    /**
+     * ustawia wartosci poczatkowe dla stalych obiektow, odpowiadajacych planetom
+     */
     void setConstPlanets();
 
+    /**
+     * aktualizuje pozycje planet na podstawie macierzy transformacji
+     * @param planetsTemp
+     */
     void updatePlanets(std::vector < Sphere* > planetsTemp);
 
+    /**
+     * ustawia wartosci macierzy transformacji poszczegolnych planet
+     */
     void setMatrices();
 
+    /**
+     * aktualizuje wartosci macierzy transformacji poszczegolnych planet
+     */
     void updateMatrices();
 };
 

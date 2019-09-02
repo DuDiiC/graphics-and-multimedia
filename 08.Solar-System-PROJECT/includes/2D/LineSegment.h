@@ -1,28 +1,11 @@
 #ifndef LINESEGMENT_H
 #define LINESEGMENT_H
 
-#include <includes/MyPoint2D.h>
+#include <includes/2D/MyPoint2D.h>
 #include <QImage>
 #include <cmath>
 
 class LineSegment {
-
-private:
-
-    /**
-     * Start point of line segment.
-     */
-    MyPoint2D startPoint;
-
-    /**
-     * End point of line segment.
-     */
-    MyPoint2D endPoint;
-
-    /**
-     * a valuue from formula: f(x) = ax + b
-     */
-    double a;
 
 public:
 
@@ -66,6 +49,22 @@ public:
      */
     double lenght();
 
+private:
+
+    /**
+     * Start point of line segment.
+     */
+    MyPoint2D startPoint;
+
+    /**
+     * End point of line segment.
+     */
+    MyPoint2D endPoint;
+
+    /**
+     * a valuue from formula: f(x) = ax + b
+     */
+    double a;
 };
 
 #endif // LINESEGMENT_H

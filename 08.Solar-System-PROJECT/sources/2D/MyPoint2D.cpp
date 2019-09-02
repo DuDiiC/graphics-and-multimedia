@@ -1,4 +1,4 @@
-#include "includes/MyPoint2D.h"
+#include "includes/2D/MyPoint2D.h"
 
 void MyPoint2D::setPixel(QImage *image, int RGBColor) {
 
@@ -18,7 +18,7 @@ void MyPoint2D::setPixel(QImage *image, int RGBColor) {
 
 void MyPoint2D::setPixel(QImage *image, const QColor& RGBColor) {
 
-    uchar* bits = (uchar*)image->bits();
+    auto* bits = (uchar*)image->bits();
 
     if(this->isOnWidget(image)) {
         bits[4*(this->x + this->y*image->width())] = RGBColor.blue(); // blue
@@ -30,7 +30,7 @@ void MyPoint2D::setPixel(QImage *image, const QColor& RGBColor) {
 
 int MyPoint2D::getPixelRGBColor(QImage *image) {
 
-    uchar* bits = (uchar*)image->bits();
+    auto* bits = (uchar*)image->bits();
 
     int RGBColorBlue = bits[4*(this->x + this->y * image->width())];
     int RGBColorGreen = (bits[4*(this->x + this->y * image->width())+1] << 8);

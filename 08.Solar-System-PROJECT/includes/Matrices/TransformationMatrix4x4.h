@@ -80,12 +80,6 @@ public:
 
 private:
 
-    /**
-     * 3x3 matrix to make 3D transformations for points in homogenuous coordinates notation (vector 4x1 [x, y, z, 1])
-     * ??? inverse matrix after multiplying all transformations and moving the center from point (0,0) and back ???
-     * multiplication:
-     * ???
-     */
     QGenericMatrix<4, 4, double> *transformationMatrix;
 
     /**
@@ -93,7 +87,7 @@ private:
      */
     int x0 = 0;
     int y0 = 0;
-    int z0 = 0; /// ???
+    int z0 = 0;
 
     /**
      * values to translation
@@ -110,7 +104,7 @@ private:
     double sz;
 
     /**
-     * values in radians, between (-PI, PI), value to rotation
+     * values in radians, between [-PI, PI], value to rotation
      */
     double alphax;
     double alphay;

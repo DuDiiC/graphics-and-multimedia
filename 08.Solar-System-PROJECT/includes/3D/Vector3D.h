@@ -8,6 +8,9 @@ class Vector3D {
 
 public:
 
+    /**
+     * zamienia punkt klasy MyPoint3D na wektor zapisany jako tablica double
+     */
     static void convertToVector(MyPoint3D point, double *resultVector);
 
     /**

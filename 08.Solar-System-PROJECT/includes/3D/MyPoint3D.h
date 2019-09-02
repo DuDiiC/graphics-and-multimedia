@@ -1,7 +1,7 @@
 #ifndef MYPOINT3D_H
 #define MYPOINT3D_H
 
-#include "MyPoint2D.h"
+#include "includes/2D/MyPoint2D.h"
 
 class MyPoint3D {
 
@@ -10,6 +10,9 @@ private:
     int y;
     int z;
 
+    /**
+     * observator's point on Z in coordinate system
+     */
     int d;
 
 public:
@@ -23,8 +26,7 @@ public:
     MyPoint3D(int xP, int yP, int zP, int dP) : x(xP), y(yP), z(zP), d(dP) {
     }
 
-    ~MyPoint3D() {
-    }
+    ~MyPoint3D() = default;
 
     int getX() { return this->x; }
     void setX(int x) { this->x = x; }

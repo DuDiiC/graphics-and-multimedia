@@ -1,12 +1,4 @@
-#include "includes/Sphere.h"
-
-#include <iostream>
-
-#include <utility>
-#include <includes/TriangleTexturing.h>
-#include <includes/Vector3D.h>
-#include <includes/Matrices/SunTransformationMatrix.h>
-#include <includes/Matrices/PlanetTransformationMatrix.h>
+#include "includes/3D/Sphere.h"
 
 Sphere::Sphere(int R, int stacksCount, int sectorsCount, int d, QImage texture, int x0, int y0, int z0) {
     this->R = R;
@@ -35,25 +27,26 @@ void Sphere::draw(QImage *img, double* observer, int RGBColor) {
             0x550055 // pink
     };
 
-    //texturingWalls(img, true, colors);
-
+    // vector odpowiedzialny za oswietlenie
     double lightVector[3];
     double sphereCenter[3] {
         static_cast<double>(x0), static_cast<double>(y0), static_cast<double>(z0)
     };
     Vector3D::normalize(sphereCenter, sphereCenter);
-    if(observer != nullptr) {
+    if(observer != nullptr) { // jesli bedzie cieniowanie
         Vector3D::createVector(observer, sphereCenter, lightVector);
         Vector3D::normalize(lightVector, lightVector);
-//        std::cout << lightVector[0] << " " << lightVector[1] << " " << lightVector[2] << std::endl;
     }
-    for(int i = 0; i < triangles.size(); i++) {
-        if(isVisible(&triangles[i])) {
-//            triangles[i].changeInto2D()->draw(img, RGBColor);
-            if(observer == nullptr) {
+    for(int i = 0; i < triangles.size(); i++) { // dla kazdego trojkata
+        if(isVisible(&triangles[i])) { // jesli trojkat jest widoczny
+            //kontury
+            //triangles[i].changeInto2D()->draw(img, RGBColor);
+            if(observer == nullptr) { // wersja bez cieniowania
+                // tekstura
                 TriangleTexturing::texturing(&texture, &texturesPoints[i], img, triangles[i].changeInto2D());
+                //jednolite
                 //TriangleTexturing::texturing(colors[0], img, triangles[i].changeInto2D());
-            } else {
+            } else { // wersja z cieniowaniem
                 TriangleTexturing::texturingWithFlatShading(&texture, &texturesPoints[i], img, &triangles[i], sphereCenter);
             }
         }
@@ -61,21 +54,27 @@ void Sphere::draw(QImage *img, double* observer, int RGBColor) {
 }
 
 void Sphere::updateValues(TransformationMatrix4x4 *matrix) {
-    for(auto & point : points) {
+
+    for(auto & point : points) { // dla kazdego punktu
         MyPoint3D newPoint;
 
+        // zamiana na klase macierzy
         double tempPointTab[] = { (double)point.getX(), (double)point.getY(), (double)point.getZ(), 1.0 };
         QGenericMatrix<1, 4, double> tempPointM(tempPointTab);
 
+        // przemnozenie przez macierz transformacji
         tempPointM = *(matrix->getTransformationMatrix()) * tempPointM;
 
+        // ustawienie nowych wartosci
         newPoint.setXYZ(tempPointM.data()[0], tempPointM.data()[1], tempPointM.data()[2]);
         newPoint.setD(d);
 
         point = newPoint;
     }
+    // aktualizacja trojkatow
     setTriangles();
 
+    // zamiana centrum sfery
     double center[] = {static_cast<double>(x0),  static_cast<double>(y0),  static_cast<double>(z0), 1.0};
     QGenericMatrix<1, 4, double> centerM(center);
 
@@ -140,19 +139,21 @@ void Sphere::setPoints() {
 
     for(int i = 0; i <= stacksCount; i++) {
 
-        stackAngle = M_PI / 2.0 - i * stackStep;
+        stackAngle = M_PI / 2.0 - i * stackStep; // dla wartosci w przedziale [-PI/2 ; PI/2]
         xy = R * cos(stackAngle);
         z = R * sin(stackAngle);
 
         for(int j = 0; j <= sectorsCount; j++) {
 
-            sectorAngle = j * sectorStep;
+            sectorAngle = j * sectorStep; // dla wartosci w przedziale [0 ; 2*PI]
 
             x = xy * cos(sectorAngle);
             y = xy * sin(sectorAngle);
             MyPoint3D tempPoint(x + x0, y + y0, z + z0, d);
             points.push_back(tempPoint);
 
+            // wyliczenie odpowiednich mnoznikow dla x oraz y tekstury, ktore
+            // odpowiadaja danym punktom na sferze
             s = (double) j / sectorsCount;
             t = (double) i / stacksCount;
             std::pair < double, double > temp(s, t);
@@ -166,18 +167,20 @@ void Sphere::setTriangles() {
     triangles.clear();
     texturesPoints.clear();
 
-    int k1, k2;
+    int k1, k2; // zmienne pomocnicze
 
     for(int i = 0; i < stacksCount; i++) {
 
-        k1 = i * (sectorsCount + 1);
-        k2 = k1 + sectorsCount + 1;
+        k1 = i * (sectorsCount + 1); // zaczynamy od aktualnego stosu
+        k2 = k1 + sectorsCount + 1; // zaczynamy od jednego dalej
 
         for(int j = 0; j < sectorsCount; j++, k1++, k2++) {
-            if(i != 0) {
+            // nie liczac pierwszego i ostatniego stosu, mamy dwa trojkaty na sektor
+            if(i != 0) { // kolejnosc k1 -> k2 -> k1+1
                 Triangle3D tempTriangle(points[k2], points[k1], points[k1+1]);
                 triangles.push_back(tempTriangle);
 
+                // wyznaczenie trojkatow z tekstury odpowiadajacych tym na kuli
                 MyPoint2D p1(textureValues[k2].first * texture.width(), textureValues[k2].second * texture.height());
                 MyPoint2D p2(textureValues[k1].first * texture.width(), textureValues[k1].second * texture.height());
                 MyPoint2D p3(textureValues[k1+1].first * texture.width(), textureValues[k1+1].second * texture.height());
@@ -185,10 +188,11 @@ void Sphere::setTriangles() {
 
                 texturesPoints.push_back(tempTexTriangle);
             }
-            if(i != (stacksCount -1)) {
+            if(i != (stacksCount -1)) { // kolejnosc k1+1 -> k2 -> k2+1
                 Triangle3D tempTriangle(points[k2+1], points[k2], points[k1+1]);
                 triangles.push_back(tempTriangle);
 
+                // wyznaczenie punktow z tekstury odpowiadajacych tym na kuli
                 MyPoint2D p1(textureValues[k2+1].first * texture.width(), textureValues[k2+1].second * texture.height());
                 MyPoint2D p2(textureValues[k2].first * texture.width(), textureValues[k2].second * texture.height());
                 MyPoint2D p3(textureValues[k1+1].first * texture.width(), textureValues[k1+1].second * texture.height());
@@ -198,10 +202,6 @@ void Sphere::setTriangles() {
             }
         }
     }
-}
-
-void Sphere::texturingWalls(QImage *img, bool uniformColor, const int *colors) {
-    return;
 }
 
 bool Sphere::isVisible(Triangle3D *triangle3D) {
@@ -218,7 +218,7 @@ bool Sphere::isVisible(Triangle3D *triangle3D) {
 //
 //    double result = Vector3D::dotProduct(normalTriangleVectors[iTriangle], observerBNormal);
 
-    // dziala
+    // wyliczenie jako wyznacznik macierzy z linku
     double result2 = ((triangle->getPoint(1).getX() - triangle->getPoint(0).getX()) * (triangle->getPoint(2).getY() - triangle->getPoint(0).getY()))
                      - ((triangle->getPoint(2).getX() - triangle->getPoint(0).getX()) * (triangle->getPoint(1).getY() - triangle->getPoint(0).getY()));
     return result2 < 0.0;

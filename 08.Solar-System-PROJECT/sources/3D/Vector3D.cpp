@@ -1,5 +1,4 @@
-#include "includes/Vector3D.h"
-#include <iostream>
+#include "includes/3D/Vector3D.h"
 
 void Vector3D::convertToVector(MyPoint3D point, double *resultVector) {;
 
@@ -8,22 +7,15 @@ void Vector3D::convertToVector(MyPoint3D point, double *resultVector) {;
     resultVector[2] = (double)point.getZ();
 
     removeNegativeZero(resultVector);
-
-    //std::cout << "convertToVector(): " << resultVector[0] << " " << resultVector[1] << " " << resultVector[2] << std::endl;
 }
 
 void Vector3D::createVector(MyPoint3D point1, MyPoint3D point2, double *resultVector) {
-
-    //std::cout << point1.getX() << " " << point1.getY() << " " << point1.getZ() << std::endl;
-    //std::cout << point2.getX() << " " << point2.getY() << " " << point2.getZ() << std::endl;
 
     resultVector[0] = (double)point2.getX() - (double)point1.getX();
     resultVector[1] = (double)point2.getY() - (double)point1.getY();
     resultVector[2] = (double)point2.getZ() - (double)point1.getZ();
 
     removeNegativeZero(resultVector);
-
-    //std::cout << "createVector(): " << resultVector[0] << " " << resultVector[1] << " " << resultVector[2] << std::endl;
 }
 
 void Vector3D::createVector(double *point1, double* point2, double* resultVector) {
@@ -44,8 +36,6 @@ void Vector3D::crossProduct(const double *vector1, const double *vector2, double
     resultVector[2] = vector1[0] * vector2[1] - vector1[1] * vector2[0];
 
     removeNegativeZero(resultVector);
-
-    //std::cout << "crossProduct(): " << resultVector[0] << " " << resultVector[1] << " " << resultVector[2] << std::endl;
 }
 
 double Vector3D::dotProduct(const double *vector1, const double *vector2) {
@@ -61,8 +51,6 @@ void Vector3D::normalize(double *vector, double *resultVector) {
     resultVector[2] = vector[2] / l;
 
     removeNegativeZero(resultVector);
-
-    //std::cout << "normalize(): " << l << " " << resultVector[0] << " " << resultVector[1] << " " << resultVector[2] << std::endl;
 }
 
 void * Vector3D::avgVectorVertex(const double *wall1, const double *wall2, const double *wall3, double *resultVector) {
@@ -72,8 +60,6 @@ void * Vector3D::avgVectorVertex(const double *wall1, const double *wall2, const
     resultVector[2] = (wall1[2] + wall2[2] + wall3[2])/3.0;
 
     removeNegativeZero(resultVector);
-
-    //std::cout << "avgVectorVertex(): " << resultVector[0] << " " << resultVector[1] << " " << resultVector[2] << std::endl;
 }
 
 void Vector3D::removeNegativeZero(double* vector) {

@@ -1,4 +1,4 @@
-#include "includes/Triangle3D.h"
+#include "includes/3D/Triangle3D.h"
 
 Triangle3D::Triangle3D(MyPoint3D point1, MyPoint3D point2, MyPoint3D point3) {
     points.push_back(point1);

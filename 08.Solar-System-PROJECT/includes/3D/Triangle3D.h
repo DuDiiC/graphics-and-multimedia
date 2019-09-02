@@ -1,9 +1,9 @@
 #ifndef TRIANGLE3D_H
 #define TRIANGLE3D_H
 
-#include "MyPoint2D.h"
+#include "includes/2D/MyPoint2D.h"
 #include "MyPoint3D.h"
-#include "Triangle.h"
+#include "includes/2D/Triangle.h"
 
 #include <utility>
 #include <vector>

@@ -36,6 +36,9 @@ public:
 
     QGenericMatrix<4, 4, double> *getPlanetTransformationMatrix() { return planetTransformationMatrix; }
 
+    /**
+     * updateMatrix is method calling after modyfying some values in transformation matrix
+     */
     void updateMatrix();
 
 private:

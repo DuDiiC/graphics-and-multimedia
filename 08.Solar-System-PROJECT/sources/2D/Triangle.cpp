@@ -1,6 +1,4 @@
-#include "includes/Triangle.h"
-
-#include <utility>
+#include "includes/2D/Triangle.h"
 
 Triangle::Triangle() = default;
 
@@ -26,7 +24,7 @@ void Triangle::draw(QImage *img, int RGBColor) {
 
         tempLine.draw(img, RGBColor);
     }
-//     przeciwprostokatna
+    //przeciwprostokatna
     tempLine.setStartPoint(points[0]);
     tempLine.draw(img, RGBColor);
 }

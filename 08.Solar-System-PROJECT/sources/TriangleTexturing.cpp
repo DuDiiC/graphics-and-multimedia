@@ -1,25 +1,4 @@
 #include "includes/TriangleTexturing.h"
-#include "includes/Vector3D.h"
-#include <iostream>
-
-int TriangleTexturing::sourceTrianglePoints = 0;
-
-int TriangleTexturing::texturedTrianglePoints = 0;
-
-void TriangleTexturing::addSourceTrianglePoint() {
-    sourceTrianglePoints++;
-}
-
-void TriangleTexturing::addTexturedTrianglePoint() {
-    texturedTrianglePoints++;
-}
-
-void TriangleTexturing::resetSourceTrianglePoints() {
-    sourceTrianglePoints = 0;
-}
-void TriangleTexturing::resetTexturedTrianglePoint() {
-    texturedTrianglePoints = 0;
-}
 
 void TriangleTexturing::texturing(QImage *sourceImg, Triangle *sourceTriangle, QImage *texturedImg, Triangle *texturedTriangle) {
     double u, v, w;

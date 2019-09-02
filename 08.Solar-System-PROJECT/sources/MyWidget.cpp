@@ -1,11 +1,5 @@
 #include "includes/MyWidget.h"
 
-#include <includes/MilkyWay.h>
-#include <includes/Vector3D.h>
-#include <QtCore/QTime>
-#include <QtCore/QEventLoop>
-#include <QCoreApplication>
-
 const std::string SUN_TEXTURE = "/home/maciejdudek/Pulpit/Fourth-Semester-Graphics/08.Solar-System-PROJECT/resources/sun.jpg";
 const std::string MERCURY_TEXTURE = "/home/maciejdudek/Pulpit/Fourth-Semester-Graphics/08.Solar-System-PROJECT/resources/mercury.jpg";
 const std::string VENUS_TEXTURE = "/home/maciejdudek/Pulpit/Fourth-Semester-Graphics/08.Solar-System-PROJECT/resources/venus.jpg";
@@ -25,36 +19,38 @@ MyWidget::MyWidget(int width, int height) {
 
     *imgConst = *img;
 
-    transformationMatrix = new TransformationMatrix4x4(0, 0, 0,
-                                                        0, 0, 0,
-                                                        1.0, 1.0, 1.0,
-                                                        0.0, 0.0, 0.0, img);
-    transformationMatrix->updateMatrix();
+//    transformationMatrix = new TransformationMatrix4x4(0, 0, 0,
+//                                                        0, 0, 0,
+//                                                        1.0, 1.0, 1.0,
+//                                                        0.0, 0.0, 0.0, img);
+//    transformationMatrix->updateMatrix();
 
     setMatrices();
     setPlanets();
     setConstPlanets();
 
-    planets[0]->draw(img);
-    for(int i = 1; i < planets.size(); i++) {
-        planets[i]->draw(img, observer);
-        *planets[i] = *constPlanets[i];
-    }
-
-    repaint();
-    //updateImg();
+//    planets[0]->draw(img);
+//    for(int i = 1; i < planets.size(); i++) {
+//        planets[i]->draw(img, observer);
+//        *planets[i] = *constPlanets[i];
+//    }
+//
+//    repaint();
+    updateImg();
 }
 
 MyWidget::~MyWidget() {
     delete img;
     delete imgConst;
-    delete transformationMatrix;
+//    delete transformationMatrix;
     for(auto & planet : planets) { delete planet; }
+    for(auto & matrix : planetsMatrices) { delete matrix; }
 
     img = nullptr;
     imgConst = nullptr;
-    transformationMatrix = nullptr;
+//    transformationMatrix = nullptr;
     for(auto & planet : planets) { planet = nullptr; }
+    for(auto & matrix : planetsMatrices) { matrix = nullptr; }
 }
 
 void MyWidget::paintEvent(QPaintEvent *) {
@@ -64,6 +60,7 @@ void MyWidget::paintEvent(QPaintEvent *) {
 
 void MyWidget::updateImg() {
 
+    // sortowanie planet wedlug wspolrzednej z
     std::vector < std::pair < int, int > > planetsZ;
     for(int i = 0; i < planets.size(); i++) {
         planetsZ.emplace_back(i, planets[i]->getZ0());
@@ -78,6 +75,7 @@ void MyWidget::updateImg() {
 //        std::cout << planets[i]->getZ0() << std::endl;
 //        *planets[i] = *constPlanets[i];
 //    }
+    // rysowanie planet
     for(int i = 0; i < planetsZ.size(); i++) {
         if(planetsZ[i].first == 0) {
             planets[planetsZ[i].first]->draw(img);
@@ -89,12 +87,7 @@ void MyWidget::updateImg() {
     repaint();
 }
 
-//bool MyWidget::sortingPlanets(const std::pair < int, int > &a, const std::pair < int, int > &b) {
-//    return (a.second < b.second);
-//}
-
 void MyWidget::setPlanets() {
-
     planets.push_back(new Sphere(80, 25, 25, -1000, QImage(SUN_TEXTURE.c_str())));
     planets.push_back(new Sphere(10, 15, 15, -1000, QImage(MERCURY_TEXTURE.c_str()), 90, 12));
     planets.push_back(new Sphere(13, 15, 15, -1000, QImage(VENUS_TEXTURE.c_str()), 120, 15));
@@ -166,7 +159,7 @@ void MyWidget::animation() {
     double alphaUranus = 0.0;
     double alphaNeptune = 0.0;
 
-    while(val < 10000000L) {
+    while(val < 100000L) {
         QTime pause = QTime::currentTime().addMSecs(1);
         while(QTime::currentTime() < pause) {
             QCoreApplication::processEvents(QEventLoop::AllEvents, 1);
@@ -218,6 +211,8 @@ void MyWidget::setSunRotationZ(int value) {
 void MyWidget::setMercuryRotation(int value) {
     planetsMatrices[0]->setAlphaOFromDegrees(value);
     planets[1]->updateValues(planetsMatrices[0]);
+//    transformationMatrix->setAlphaYFromDegrees(value);
+//    planets[1]->updateValues(transformationMatrix);
 //    constPlanets[1]->updateValues(planetsMatrices[0]);
 //    updateImg();
 }
