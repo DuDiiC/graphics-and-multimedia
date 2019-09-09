@@ -2,13 +2,20 @@
 
 const std::string SUN_TEXTURE = "/home/maciejdudek/Pulpit/Fourth-Semester-Graphics/08.Solar-System-PROJECT/resources/sun.jpg";
 const std::string MERCURY_TEXTURE = "/home/maciejdudek/Pulpit/Fourth-Semester-Graphics/08.Solar-System-PROJECT/resources/mercury.jpg";
+//const std::string MERCURY_TEXTURE = "/home/maciejdudek/Pulpit/Fourth-Semester-Graphics/08.Solar-System-PROJECT/resources2/2k_mercury.jpg";
 const std::string VENUS_TEXTURE = "/home/maciejdudek/Pulpit/Fourth-Semester-Graphics/08.Solar-System-PROJECT/resources/venus.jpg";
+//const std::string VENUS_TEXTURE = "/home/maciejdudek/Pulpit/Fourth-Semester-Graphics/08.Solar-System-PROJECT/resources2/2k_venus.jpg";
 const std::string EARTH_TEXTURE = "/home/maciejdudek/Pulpit/Fourth-Semester-Graphics/08.Solar-System-PROJECT/resources/earth.jpg";
+//const std::string EARTH_TEXTURE = "/home/maciejdudek/Pulpit/Fourth-Semester-Graphics/08.Solar-System-PROJECT/resources2/2k_earth.jpg";
 const std::string MARS_TEXTURE = "/home/maciejdudek/Pulpit/Fourth-Semester-Graphics/08.Solar-System-PROJECT/resources/mars.png";
+//const std::string MARS_TEXTURE = "/home/maciejdudek/Pulpit/Fourth-Semester-Graphics/08.Solar-System-PROJECT/resources2/2k_mars.png";
 const std::string JUPITER_TEXTURE = "/home/maciejdudek/Pulpit/Fourth-Semester-Graphics/08.Solar-System-PROJECT/resources/jupiter.jpg";
+//const std::string JUPITER_TEXTURE = "/home/maciejdudek/Pulpit/Fourth-Semester-Graphics/08.Solar-System-PROJECT/resources2/2k_jupiter.jpg";
 const std::string SATURN_TEXTURE = "/home/maciejdudek/Pulpit/Fourth-Semester-Graphics/08.Solar-System-PROJECT/resources/saturn.jpg";
+//const std::string SATURN_TEXTURE = "/home/maciejdudek/Pulpit/Fourth-Semester-Graphics/08.Solar-System-PROJECT/resources2/2k_saturn.jpg";
 const std::string URANUS_TEXTURE = "/home/maciejdudek/Pulpit/Fourth-Semester-Graphics/08.Solar-System-PROJECT/resources/uranus.jpg";
 const std::string NEPTUNE_TEXTURE = "/home/maciejdudek/Pulpit/Fourth-Semester-Graphics/08.Solar-System-PROJECT/resources/neptune.jpg";
+//const std::string NEPTUNE_TEXTURE = "/home/maciejdudek/Pulpit/Fourth-Semester-Graphics/08.Solar-System-PROJECT/resources2/2k_neptune.jpg";
 
 MyWidget::MyWidget(int width, int height) {
 
@@ -112,7 +119,7 @@ void MyWidget::setConstPlanets() {
     constPlanets.push_back(new Sphere(33, 15, 15, -1000, QImage(URANUS_TEXTURE.c_str()), 535, -12));
     constPlanets.push_back(new Sphere(30, 15, 15, -1000, QImage(NEPTUNE_TEXTURE.c_str()), 630, 15));
 
-    updatePlanets(constPlanets);
+//    updatePlanets(constPlanets);
 }
 
 void MyWidget::updatePlanets(std::vector < Sphere* > planetsTemp) {
@@ -125,14 +132,14 @@ void MyWidget::updatePlanets(std::vector < Sphere* > planetsTemp) {
 void MyWidget::setMatrices() {
     sunMatrix = new SunTransformationMatrix(M_PI/2, M_PI/4, 0.0);
 
-    planetsMatrices.push_back(new PlanetTransformationMatrix(90, 12, 0, M_PI/2, 0.0, 0.0, 0.0));
-    planetsMatrices.push_back(new PlanetTransformationMatrix(120, 15, 0, M_PI/2, 0.0, 0.0, 0.0));
-    planetsMatrices.push_back(new PlanetTransformationMatrix(175, -12, 0, M_PI/2, 0.0, 0.0, 0.0));
-    planetsMatrices.push_back(new PlanetTransformationMatrix(240, 13, 0, M_PI/2, 0.0, 0.0, 0.0));
-    planetsMatrices.push_back(new PlanetTransformationMatrix(320, -14, 0, M_PI/2, 0.0, 0.0, 0.0));
-    planetsMatrices.push_back(new PlanetTransformationMatrix(440, 11, 0, M_PI/2, 0.0, 0.0, 0.0));
-    planetsMatrices.push_back(new PlanetTransformationMatrix(535, -12, 0, M_PI/2, 0.0, 0.0, 0.0));
-    planetsMatrices.push_back(new PlanetTransformationMatrix(630, 15, 0, M_PI/2, 0.0, 0.0, 0.0));
+    planetsMatrices.push_back(new PlanetTransformationMatrix(90, 12, 0, M_PI/3, 0.0, 0.0, 0.0));
+    planetsMatrices.push_back(new PlanetTransformationMatrix(120, 15, 0, M_PI/1.5, 0.0, 0.0, 0.0));
+    planetsMatrices.push_back(new PlanetTransformationMatrix(175, -12, 0, M_PI/2.5, 0.0, 0.0, 0.0));
+    planetsMatrices.push_back(new PlanetTransformationMatrix(240, 13, 0, M_PI/1.75, 0.0, 0.0, 0.0));
+    planetsMatrices.push_back(new PlanetTransformationMatrix(320, -14, 0, M_PI/3, 0.0, 0.0, 0.0));
+    planetsMatrices.push_back(new PlanetTransformationMatrix(440, 11, 0, M_PI/2.25, 0.0, 0.0, 0.0));
+    planetsMatrices.push_back(new PlanetTransformationMatrix(535, -12, 0, M_PI/1.75, 0.0, 0.0, 0.0));
+    planetsMatrices.push_back(new PlanetTransformationMatrix(630, 15, 0, M_PI/2.5, 0.0, 0.0, 0.0));
 
     updateMatrices();
 }
@@ -148,7 +155,7 @@ void MyWidget::animation() {
 
     long long val = 0;
 
-    double EARTH_INTERVAL = 2.0;
+    double EARTH_INTERVAL = 4.0;
     double alphaSun = 0.0;
     double alphaMercury = 0.0;
     double alphaVenus = 0.0;
@@ -159,30 +166,32 @@ void MyWidget::animation() {
     double alphaUranus = 0.0;
     double alphaNeptune = 0.0;
 
-    while(val < 100000L) {
+    while(val < 25L) {
         QTime pause = QTime::currentTime().addMSecs(1);
         while(QTime::currentTime() < pause) {
             QCoreApplication::processEvents(QEventLoop::AllEvents, 1);
         }
         val++;
         alphaSun += 0.5;
-        alphaMercury += (EARTH_INTERVAL * 4.16);
-        alphaVenus += (EARTH_INTERVAL * 1.623);
+        alphaMercury += (EARTH_INTERVAL * 3.16);
+        alphaVenus += (EARTH_INTERVAL * 2.623);
         alphaEarth += (EARTH_INTERVAL);
-        alphaMars += (EARTH_INTERVAL * 0.531);
-        alphaJupiter += (EARTH_INTERVAL * 0.183);
-        alphaSaturn += (EARTH_INTERVAL * 0.084);
-        alphaUranus += (EARTH_INTERVAL * 3.062);
+        alphaMars += (EARTH_INTERVAL * 0.731);
+        alphaJupiter += (EARTH_INTERVAL * 0.483);
+        alphaSaturn += (EARTH_INTERVAL * 0.284);
+        alphaUranus += (EARTH_INTERVAL * 0.162);
         alphaNeptune += (EARTH_INTERVAL * 0.044);
-        setSunRotationZ(alphaSun);
-        setMercuryRotation(alphaMercury);
-        setVenusRotation(alphaVenus);
-        setEarthRotation(alphaEarth);
-        setMarsRotation(alphaMars);
-        setJupiterRotation(alphaJupiter);
-        setSaturnRotation(alphaSaturn);
-        setUranusRotation(alphaUranus);
-        setNeptuneRotation(alphaNeptune);
+        setSunRotationY((int)alphaSun);
+        setSunRotationZ((int)alphaSun);
+        setMercuryRotation((int)alphaMercury);
+        setVenusRotation((int)alphaVenus);
+        setEarthRotation((int)alphaEarth);
+        setMarsRotation((int)alphaMars);
+        setJupiterRotation((int)alphaJupiter);
+        setSaturnRotation((int)alphaSaturn);
+        setUranusRotation((int)alphaUranus);
+        setNeptuneRotation((int)alphaNeptune);
+//        updateMatrices();
         updateImg();
     }
 }
@@ -210,6 +219,7 @@ void MyWidget::setSunRotationZ(int value) {
 
 void MyWidget::setMercuryRotation(int value) {
     planetsMatrices[0]->setAlphaOFromDegrees(value);
+    planetsMatrices[0]->setAlphaYFromDegrees(value);
     planets[1]->updateValues(planetsMatrices[0]);
 //    transformationMatrix->setAlphaYFromDegrees(value);
 //    planets[1]->updateValues(transformationMatrix);
@@ -219,42 +229,49 @@ void MyWidget::setMercuryRotation(int value) {
 
 void MyWidget::setVenusRotation(int value) {
     planetsMatrices[1]->setAlphaOFromDegrees(value);
+    planetsMatrices[1]->setAlphaYFromDegrees(value);
     planets[2]->updateValues(planetsMatrices[1]);
 //    updateImg();
 }
 
 void MyWidget::setEarthRotation(int value) {
     planetsMatrices[2]->setAlphaOFromDegrees(value);
+    planetsMatrices[2]->setAlphaYFromDegrees(value);
     planets[3]->updateValues(planetsMatrices[2]);
 //    updateImg();
 }
 
 void MyWidget::setMarsRotation(int value) {
     planetsMatrices[3]->setAlphaOFromDegrees(value);
+    planetsMatrices[3]->setAlphaYFromDegrees(value);
     planets[4]->updateValues(planetsMatrices[3]);
 //    updateImg();
 }
 
 void MyWidget::setJupiterRotation(int value) {
     planetsMatrices[4]->setAlphaOFromDegrees(value);
+    planetsMatrices[4]->setAlphaYFromDegrees(value);
     planets[5]->updateValues(planetsMatrices[4]);
 //    updateImg();
 }
 
 void MyWidget::setSaturnRotation(int value) {
     planetsMatrices[5]->setAlphaOFromDegrees(value);
+    planetsMatrices[5]->setAlphaYFromDegrees(value);
     planets[6]->updateValues(planetsMatrices[5]);
 //    updateImg();
 }
 
 void MyWidget::setUranusRotation(int value) {
     planetsMatrices[6]->setAlphaOFromDegrees(value);
+    planetsMatrices[6]->setAlphaYFromDegrees(value);
     planets[7]->updateValues(planetsMatrices[6]);
 //    updateImg();
 }
 
 void MyWidget::setNeptuneRotation(int value) {
     planetsMatrices[7]->setAlphaOFromDegrees(value);
+    planetsMatrices[7]->setAlphaYFromDegrees(value);
     planets[8]->updateValues(planetsMatrices[7]);
 //    updateImg();
 }
