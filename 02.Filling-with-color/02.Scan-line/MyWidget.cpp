@@ -42,7 +42,7 @@ void MyWidget::mousePressEvent(QMouseEvent *event) {
         drawCircle = true;
         circle->setCenterPoint(event->pos());
     } else if(event->button() == Qt::RightButton) {
-        ScanLine::scanLine(img, event->pos());
+        ScanLine::scanLine(img);
         repaint();
         *img2 = *img;
     }

@@ -2,6 +2,9 @@
 #define SCANLINE_H
 
 #include <QImage>
+#include <vector>
+#include "MyPoint2D.h"
+#include "LineSegment.h"
 
 #include "MyPoint2D.h"
 
@@ -19,7 +22,7 @@ public:
      * @param startPoint - the starting point of the algorithm
      * @param backgroundRGBColor - the border color to fill the field with.
      */
-    static void scanLine(QImage *image, MyPoint2D startPoint, int fillRGBColor = 0xFFFFFF);
+    static void scanLine(QImage *image, int fillRGBColor = 0xFFFFFF);
 };
 
 #endif // SCANLINE_h
