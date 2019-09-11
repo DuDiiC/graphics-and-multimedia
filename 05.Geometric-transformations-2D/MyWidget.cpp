@@ -1,8 +1,8 @@
 #include "MyWidget.h"
-#include <iostream>
+
 MyWidget::MyWidget(QSlider* scalingXS, QSlider* scalingYS, int width, int height) {
 
-    img = new QImage("/home/maciejdudek/Pulpit/LGM koncowe/Fourth-Semester-Graphics/05.Geometric-transformations-2D/resources/image.jpg");
+    img = new QImage("/home/maciejdudek/Pulpit/Fourth-Semester-Graphics/05.Geometric-transformations-2D/resources/image.jpg");
     img2 = new QImage(width, height, QImage::Format_RGB32);
 
     *img2 = *img;
@@ -142,8 +142,6 @@ QColor MyWidget::doubleLineInterpolation(QImage *img, double x, double y) {
                     + (1.0 - b) * ((1.0 - a) * (double)point4Color.green() + a * (double)point3Color.green());
         blue = b * ((1.0 - a) * (double)point1Color.blue() + a * (double)point2Color.blue())
                     + (1.0 - b) * ((1.0 - a) * (double)point4Color.blue() + a * (double)point3Color.blue());
-
-    //    std::cout << (int)RGBColor.toRgb() << std::endl;
 
         return QColor(red, green, blue);
     } else {

@@ -1,3 +1,4 @@
+#include <iostream>
 #include "includes/3D/Sphere.h"
 
 Sphere::Sphere(int R, int stacksCount, int sectorsCount, int d, QImage texture, int x0, int y0, int z0) {
@@ -130,6 +131,7 @@ void Sphere::setValues() {
 void Sphere::setPoints() {
 
     points.clear();
+    normals.clear();
     textureValues.clear();
 
     double x, y, xy, z, s, t;
@@ -147,10 +149,17 @@ void Sphere::setPoints() {
 
             sectorAngle = j * sectorStep; // dla wartosci w przedziale [0 ; 2*PI]
 
+            // ustawianie poszczegolnych punktow bryly
             x = xy * cos(sectorAngle);
             y = xy * sin(sectorAngle);
             MyPoint3D tempPoint(x + x0, y + y0, z + z0, d);
             points.push_back(tempPoint);
+
+            // ustawienie tym punktom wektorow normalnych
+            double tempNormals[3] = { x, y, z };
+            Vector3D::normalize(tempNormals, tempNormals);
+            normals.push_back(tempNormals);
+
 
             // wyliczenie odpowiednich mnoznikow dla x oraz y tekstury, ktore
             // odpowiadaja danym punktom na sferze
@@ -177,7 +186,12 @@ void Sphere::setTriangles() {
         for(int j = 0; j < sectorsCount; j++, k1++, k2++) {
             // nie liczac pierwszego i ostatniego stosu, mamy dwa trojkaty na sektor
             if(i != 0) { // kolejnosc k1 -> k2 -> k1+1
-                Triangle3D tempTriangle(points[k2], points[k1], points[k1+1]);
+                // wrzucamy punkty i wektory normalne do vectorow
+                std::vector < MyPoint3D > tempPoints;
+                tempPoints.push_back(points[k2]); tempPoints.push_back(points[k1]); tempPoints.push_back(points[k1+1]);
+                std::vector < double* > tempNormals;
+                tempNormals.push_back(normals[k2]); tempNormals.push_back(normals[k1]); tempNormals.push_back(normals[k1+1]);
+                Triangle3D tempTriangle(tempPoints, tempNormals);
                 triangles.push_back(tempTriangle);
 
                 // wyznaczenie trojkatow z tekstury odpowiadajacych tym na kuli
@@ -189,7 +203,12 @@ void Sphere::setTriangles() {
                 texturesPoints.push_back(tempTexTriangle);
             }
             if(i != (stacksCount -1)) { // kolejnosc k1+1 -> k2 -> k2+1
-                Triangle3D tempTriangle(points[k2+1], points[k2], points[k1+1]);
+                // wrzucamy punkty i wektory normalne do vectorow
+                std::vector < MyPoint3D > tempPoints;
+                tempPoints.push_back(points[k2+1]); tempPoints.push_back(points[k2]); tempPoints.push_back(points[k1+1]);
+                std::vector < double* > tempNormals;
+                tempNormals.push_back(normals[k2+1]); tempNormals.push_back(normals[k2]); tempNormals.push_back(normals[k1+1]);
+                Triangle3D tempTriangle(tempPoints, tempNormals);
                 triangles.push_back(tempTriangle);
 
                 // wyznaczenie punktow z tekstury odpowiadajacych tym na kuli
@@ -208,28 +227,8 @@ bool Sphere::isVisible(Triangle3D *triangle3D) {
 
     Triangle *triangle = triangle3D->changeInto2D();
 
-//    MyPoint3D observer(0, 0, d, d);
-//
-//    double observerB[3];
-//    Vector3D::createVector(triangles[iTriangle].getPoint(1), observer, observerB);
-//
-//    double observerBNormal[3];
-//    Vector3D::normalize(observerB, observerBNormal);
-//
-//    double result = Vector3D::dotProduct(normalTriangleVectors[iTriangle], observerBNormal);
-
     // wyliczenie jako wyznacznik macierzy z linku
     double result2 = ((triangle->getPoint(1).getX() - triangle->getPoint(0).getX()) * (triangle->getPoint(2).getY() - triangle->getPoint(0).getY()))
                      - ((triangle->getPoint(2).getX() - triangle->getPoint(0).getX()) * (triangle->getPoint(1).getY() - triangle->getPoint(0).getY()));
     return result2 < 0.0;
-
-//    std::cout << iTriangle << " " << result << " " << result2 << " " << " [" <<
-//        normalTriangleVectors[iTriangle][0] << " " << normalTriangleVectors[iTriangle][1] << " " << normalTriangleVectors[iTriangle][2] << "], [" <<
-//        observerBNormal[0] << " " << observerBNormal[1] << " " << observerBNormal[2] << "]" << std::endl;
-
-    return result2 < 0.0;
-
-//    return normalTriangleVectors[iTriangle][2] < 0.0;
-
-
 }

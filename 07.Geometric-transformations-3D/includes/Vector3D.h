@@ -14,7 +14,7 @@ public:
      * Fukncja tworzaca wektor zaczepiony w punkcie point1 i prowadacy do punktu point2
      */
     static void createVector(MyPoint3D point1, MyPoint3D point2, double *resultVector);
-
+    static void createVector(double *point1, double* point2, double* resultVector);
     /**
      * Dlugosc wektora
      */

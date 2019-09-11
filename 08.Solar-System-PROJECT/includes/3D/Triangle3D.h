@@ -15,7 +15,9 @@ public:
     Triangle3D() {
     }
 
-    Triangle3D(std::vector < MyPoint3D > points) : points(std::move(points)) {}
+    Triangle3D(std::vector < MyPoint3D > points, std::vector < double* > normals)
+                    : points(std::move(points)), normals(std::move(normals)) {
+    }
 
     Triangle3D(MyPoint3D point1, MyPoint3D point2, MyPoint3D point3);
 
@@ -34,6 +36,8 @@ public:
     void setPoint(int index, MyPoint3D point) { points[index] = point; }
     MyPoint3D getPoint(int index) { return points[index]; }
 
+    double* getNormal(int index) { return normals[index]; }
+
     void addPoint(MyPoint3D point) {
         points.push_back(point);
     }
@@ -49,6 +53,7 @@ public:
 private:
 
     std::vector < MyPoint3D > points;
+    std::vector < double* > normals;
 };
 
 #endif // TRIANGLE3D_H

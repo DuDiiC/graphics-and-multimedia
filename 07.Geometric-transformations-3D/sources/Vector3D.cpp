@@ -26,6 +26,13 @@ void Vector3D::createVector(MyPoint3D point1, MyPoint3D point2, double *resultVe
     //std::cout << "createVector(): " << resultVector[0] << " " << resultVector[1] << " " << resultVector[2] << std::endl;
 }
 
+void Vector3D::createVector(double *point1, double* point2, double* resultVector) {
+
+    resultVector[0] = point2[0] - point1[0];
+    resultVector[1] = point2[1] - point1[1];
+    resultVector[2] = point2[2] - point1[2];
+}
+
 double Vector3D::length(double *vector) {
     return sqrt(pow(vector[0], 2) + pow(vector[1], 2) + pow(vector[2], 2));
 }

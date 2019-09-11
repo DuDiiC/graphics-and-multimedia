@@ -17,6 +17,7 @@ Cube::Cube(int a, int d, int x0, int y0, int z0) {
     z = a;
     this->x0 = x0; this->y0 = y0; this->z0 = z0;
     this->d = d;
+    observer[0] = 0; observer[1] = 0; observer[2] = d;
     setValues();
 }
 
@@ -42,12 +43,37 @@ void Cube::draw(QImage *img, int RGBColor) {
             0x555555, //white
             0x550055 // pink
     };
+
+    // fill colors
     texturingWalls(img, true, colors);
+    // use images
     // texturingWalls(img);
 
     // drawing cube's edges
     for(auto & triangle : triangles) {
         triangle.changeInto2D()->draw(img, RGBColor);
+    }
+
+    /// test oswietlenia
+    double pozycjaSwiatla[3] = {0, 0, static_cast<double>(d)};
+    double saturacja[3] = {1, 1, 1};
+    double pozycjaObserwatora[3] = {0, 0, static_cast<double>(d)};
+
+    // dla kazdego wierzcholka
+    for(int i = 0; i < 8; i++) {
+        double N[3] = { avgNormalVertexVectors[i][0], avgNormalVertexVectors[i][1], avgNormalVertexVectors[i][2] };
+        double L[3];
+        double aktualnaPozycja[3] = { static_cast<double>(points[i].getX()), static_cast<double>(points[i].getY()), static_cast<double>(points[i].getZ()) };
+        Vector3D::createVector(aktualnaPozycja, pozycjaSwiatla, L);
+        double R[3];
+        double V[3];
+
+        Vector3D::normalize(N, N);
+        Vector3D::normalize(L, L);
+        Vector3D::normalize(R, R);
+        Vector3D::normalize(V, V);
+
+        std::cout << Vector3D::dotProduct(N, L) << std::endl;
     }
 }
 
@@ -76,6 +102,9 @@ void Cube::updateValues(TransformationMatrix4x4 *matrix) {
 //        Vector3D::normalize(dot, normalDot);
 //
 //        std::cout << Vector3D::dotProduct(avgNormalVertexVectors[i], normalDot) << std::endl;
+//    }
+//    for(int i = 0 ; i < 6; i++) {
+//        std::cout << normalWallVectors[i][2] << std::endl;
 //    }
 }
 
@@ -210,8 +239,6 @@ void Cube::setTriangleVectors() {
 
 void Cube::setAvgVertexVectors() {
     // dla kazdego wierzcholka na podstawie wektorow normalnych scian do ktorych nalezy, obliczamy sredni wektor normalny
-    double VertexVectors[8][3];
-
     // point 0
     Vector3D::avgVectorVertex(normalWallVectors[0], normalWallVectors[2], normalWallVectors[4], avgNormalVertexVectors[0]);
     // point 1
@@ -254,9 +281,6 @@ void Cube::texturingWalls(QImage *img, bool uniformColor, const int *colors) {
             if (isVisible(*wallTriangleUp/*, i, 2*i+1*/)) {
                 TriangleTexturing::texturing(selectedColor, img, wallTriangleUp);
             }
-
-            wallTriangleDown = wallTriangleUp = nullptr;
-
         } else { // texturing from sources
 
             wallSource = new QImage(IMAGE_PATHS[i].c_str());
@@ -280,7 +304,6 @@ void Cube::texturingWalls(QImage *img, bool uniformColor, const int *colors) {
             delete wallSource;
             delete p0; delete p1; delete p2; delete p3;
             delete sourceTriangleDown; delete sourceTriangleUp;
-            wallTriangleDown = wallTriangleUp = nullptr;
         }
     }
 }

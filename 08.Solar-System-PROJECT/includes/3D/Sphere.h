@@ -75,6 +75,10 @@ private:
      */
     std::vector < MyPoint3D > points;
     /**
+     * wektory normalne punktow kuli
+     */
+    std::vector < double* > normals;
+    /**
      * trojkaty kuli
      */
     std::vector < Triangle3D > triangles;

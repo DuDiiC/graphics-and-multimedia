@@ -41,6 +41,10 @@ private:
     double normalTriangleVectors[12][3];
     double avgNormalVertexVectors[8][3];
 
+    double observer[3];
+    double lightSource[3];
+    double lightSaturation[3]; // red, green, blue between [-1, 0]
+
     /**
      * na podstawie wspolrzednych ustala wektor punktow i wektor trojkatow
      */
@@ -77,7 +81,7 @@ private:
      * metoda sprawdzajaca, czy dany trojkat zrzutowany na 2D jest widoczny dla obserwatora
      * @return prawda jesli widoczny, falsz w przeciwnym wypadku
      */
-    bool isVisible(Triangle& triangle/*, int iWall, int iTriangle*/);
+    static bool isVisible(Triangle& triangle/*, int iWall, int iTriangle*/);
 
 
 };

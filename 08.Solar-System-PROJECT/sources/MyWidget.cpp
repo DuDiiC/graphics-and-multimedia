@@ -130,7 +130,7 @@ void MyWidget::updatePlanets(std::vector < Sphere* > planetsTemp) {
 }
 
 void MyWidget::setMatrices() {
-    sunMatrix = new SunTransformationMatrix(M_PI/2, M_PI/4, 0.0);
+    sunMatrix = new SunTransformationMatrix(M_PI/2.5, 0.0, 0.0);
 
     planetsMatrices.push_back(new PlanetTransformationMatrix(90, 12, 0, M_PI/3, 0.0, 0.0, 0.0));
     planetsMatrices.push_back(new PlanetTransformationMatrix(120, 15, 0, M_PI/1.5, 0.0, 0.0, 0.0));
@@ -155,7 +155,7 @@ void MyWidget::animation() {
 
     long long val = 0;
 
-    double EARTH_INTERVAL = 4.0;
+    double EARTH_INTERVAL = 1.0;
     double alphaSun = 0.0;
     double alphaMercury = 0.0;
     double alphaVenus = 0.0;
@@ -173,15 +173,14 @@ void MyWidget::animation() {
         }
         val++;
         alphaSun += 0.5;
-        alphaMercury += (EARTH_INTERVAL * 3.16);
-        alphaVenus += (EARTH_INTERVAL * 2.623);
+        alphaMercury += (EARTH_INTERVAL * 5.16);
+        alphaVenus += (EARTH_INTERVAL * 3.623);
         alphaEarth += (EARTH_INTERVAL);
-        alphaMars += (EARTH_INTERVAL * 0.731);
-        alphaJupiter += (EARTH_INTERVAL * 0.483);
-        alphaSaturn += (EARTH_INTERVAL * 0.284);
-        alphaUranus += (EARTH_INTERVAL * 0.162);
-        alphaNeptune += (EARTH_INTERVAL * 0.044);
-        setSunRotationY((int)alphaSun);
+        alphaMars += (EARTH_INTERVAL * 0.831);
+        alphaJupiter += (EARTH_INTERVAL * 0.683);
+        alphaSaturn += (EARTH_INTERVAL * 0.584);
+        alphaUranus += (EARTH_INTERVAL * 0.362);
+        alphaNeptune += (EARTH_INTERVAL * 0.244);
         setSunRotationZ((int)alphaSun);
         setMercuryRotation((int)alphaMercury);
         setVenusRotation((int)alphaVenus);
@@ -219,7 +218,7 @@ void MyWidget::setSunRotationZ(int value) {
 
 void MyWidget::setMercuryRotation(int value) {
     planetsMatrices[0]->setAlphaOFromDegrees(value);
-    planetsMatrices[0]->setAlphaYFromDegrees(value);
+    planetsMatrices[0]->setAlphaZFromDegrees(value);
     planets[1]->updateValues(planetsMatrices[0]);
 //    transformationMatrix->setAlphaYFromDegrees(value);
 //    planets[1]->updateValues(transformationMatrix);
@@ -229,49 +228,49 @@ void MyWidget::setMercuryRotation(int value) {
 
 void MyWidget::setVenusRotation(int value) {
     planetsMatrices[1]->setAlphaOFromDegrees(value);
-    planetsMatrices[1]->setAlphaYFromDegrees(value);
+    planetsMatrices[1]->setAlphaZFromDegrees(value);
     planets[2]->updateValues(planetsMatrices[1]);
 //    updateImg();
 }
 
 void MyWidget::setEarthRotation(int value) {
     planetsMatrices[2]->setAlphaOFromDegrees(value);
-    planetsMatrices[2]->setAlphaYFromDegrees(value);
+    planetsMatrices[2]->setAlphaZFromDegrees(value);
     planets[3]->updateValues(planetsMatrices[2]);
 //    updateImg();
 }
 
 void MyWidget::setMarsRotation(int value) {
     planetsMatrices[3]->setAlphaOFromDegrees(value);
-    planetsMatrices[3]->setAlphaYFromDegrees(value);
+    planetsMatrices[3]->setAlphaZFromDegrees(value);
     planets[4]->updateValues(planetsMatrices[3]);
 //    updateImg();
 }
 
 void MyWidget::setJupiterRotation(int value) {
     planetsMatrices[4]->setAlphaOFromDegrees(value);
-    planetsMatrices[4]->setAlphaYFromDegrees(value);
+    planetsMatrices[4]->setAlphaZFromDegrees(value);
     planets[5]->updateValues(planetsMatrices[4]);
 //    updateImg();
 }
 
 void MyWidget::setSaturnRotation(int value) {
     planetsMatrices[5]->setAlphaOFromDegrees(value);
-    planetsMatrices[5]->setAlphaYFromDegrees(value);
+    planetsMatrices[5]->setAlphaZFromDegrees(value);
     planets[6]->updateValues(planetsMatrices[5]);
 //    updateImg();
 }
 
 void MyWidget::setUranusRotation(int value) {
     planetsMatrices[6]->setAlphaOFromDegrees(value);
-    planetsMatrices[6]->setAlphaYFromDegrees(value);
+    planetsMatrices[6]->setAlphaZFromDegrees(value);
     planets[7]->updateValues(planetsMatrices[6]);
 //    updateImg();
 }
 
 void MyWidget::setNeptuneRotation(int value) {
     planetsMatrices[7]->setAlphaOFromDegrees(value);
-    planetsMatrices[7]->setAlphaYFromDegrees(value);
+    planetsMatrices[7]->setAlphaZFromDegrees(value);
     planets[8]->updateValues(planetsMatrices[7]);
 //    updateImg();
 }

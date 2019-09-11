@@ -6,6 +6,8 @@
 
 #include "MyPoint2D.h"
 #include "Triangle.h"
+#include "Lighting.h"
+#include "Triangle3D.h"
 
 class TriangleTexturing  {
 
@@ -21,6 +23,10 @@ public:
 
     static void texturing(QImage *sourceImg, Triangle *sourceTriangle, QImage *texturedImg, Triangle *texturedTriangle);
     static void texturing(int sourceColor, QImage *texturedImg, Triangle *texturedTriangle);
+
+
+//    static void texturingWithLighting(int sourceColor, QImage *texturedImg, Triangle3D *texturedTriangle,
+//            double *observer, Lighting lighting, );
 
 private:
 

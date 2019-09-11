@@ -17,8 +17,8 @@ int main(int argc, char **argv ) {
 
     // main app widget
     auto *widget = new QWidget();
-    widget->setMinimumWidth(1600);
-    widget->setMinimumHeight(900);
+    widget->setMinimumWidth(1425);
+    widget->setMinimumHeight(850);
 
     /// ---ANIMATION BUTTON---
     auto *animationButton = new QPushButton("ANIMATION");
