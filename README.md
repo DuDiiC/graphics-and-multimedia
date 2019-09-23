@@ -23,8 +23,7 @@ Table of contents:
 - [05. Geometric transformations for 2D objects](#05-geometric-transformations-for-2d-objects)
 - [06. Texturing of triangles](#06-texturing-of-triangles)
 - [07. Geometric transformations for 3d objects](#07-geometric-transformations-for-3d-objects)
-- [08. Lightening and shading](#08-lightening-and-shading)
-- [09. Semester project - Solar System](#09-semester-project---solar-system)
+- [08. Semester project - Solar System](#08-semester-project---solar-system)
 
 ---
 
@@ -80,23 +79,23 @@ This is a group of projects, where you can draw simple 2D objects on `QWidget`:
 There are two algorithms in this section:
 #### [flood fill](https://en.wikipedia.org/wiki/Flood_fill)
 
-        IMAGE
+![Flood-fill.gif](https://media.giphy.com/media/WoKVz6pFaDWyJpGNby/giphy.gif)
 
 #### [scan line](https://en.wikipedia.org/wiki/Scanline_rendering)
   
-        IMAGE
+![Scan-line.gif](https://media.giphy.com/media/dsuv0FMDJxrdteeDua/giphy.gif)
 
 ## 03. Color palette
 
 This project is about displaying palette of colors in [RGB](https://en.wikipedia.org/wiki/RGB_color_model) and [HSV](https://en.wikipedia.org/wiki/HSL_and_HSV) convension.
 
-    IMAGE
+![Color-palette.gif](https://media.giphy.com/media/IgKoEnq2JDsSlrtItY/giphy.gif)
 
 ## 04. Blend modes
 
 This is project, where you can [blend](https://en.wikipedia.org/wiki/Alpha_compositing) several pictures.
 
-    IMAGE
+![Blend-modes.gif](https://media.giphy.com/media/KH80ud9VoT1IXjoDX8/giphy.gif)
 
 ## 05. Geometric transformations for 2D objects
 
@@ -108,33 +107,22 @@ This is project, which show how to work geometric transformations, like
   
 I used [homogeneous coordinates](https://en.wikipedia.org/wiki/Homogeneous_coordinates) with matrices and [bilinear interpolation](https://en.wikipedia.org/wiki/Bilinear_interpolation).
 
-    IMAGE
+![Geometric-transformation-2D.gif](https://media.giphy.com/media/ZcntkQDB5TtmlpbErn/giphy.gif)
 
 ## 06. Texturing of triangles
 
 In this project, you can see how to work [texturing](https://en.wikipedia.org/wiki/Texture_mapping) technique. You can checking triangle on original fragment of bitmap and mapping it on black screen. You can change position of points.
 
-    IMAGE
+![Texturing-of-triangles.gif](https://media.giphy.com/media/mGE2Uk5GrYTAcIaNBJ/giphy.gif)
 
 ## 07. Geometric transformations for 3d objects
 
 This is simillar project to the previous one, but in 3D space. As an example, I used a cube.
 
-    IMAGE
+![Geometric-transformation-3D.gif](https://media.giphy.com/media/QBdBOFtiImU60bRVGX/giphy.gif)
 
-## 08. Lightening and shading
+## 08. Semester project - Solar System
 
-This is the same project as previous one, but with source of light.  
-[oswietlenie](https://pl.wikipedia.org/wiki/Oświetlenie_(grafika_komputerowa))  
-[cieniowanie](https://en.wikipedia.org/wiki/Shader)
+Project that uses knowledge from laboratories in practice, with [shiding](https://en.wikipedia.org/wiki/Shading#Flat_shading).  
 
-    better description
-
-    IMAGE
-
-## 09. Semester project - Solar System
-
-Project that uses knowledge from laboratories in practice.  
-Source code is in the other [repository](https://github.com/DuDiiC).
-
-    add correct link to the repository
+![Solar-system.gif](https://media.giphy.com/media/eGsHJPzA0m9mlZPAfh/giphy.gif)
